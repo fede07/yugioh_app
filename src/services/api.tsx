@@ -22,3 +22,13 @@ export const getCardById = async (id: string): Promise<Card> => {
     return {} as Card
   }
 }
+
+export const getCardsByName = async (name: string): Promise<Card[]> => {
+  try {
+    const response = await axios.get(`${BASE_URL}/cardinfo.php?fname=${name}`)
+    return response.data.data
+  } catch (error) {
+    console.log(error)
+    return {} as Card[]
+  }
+}
