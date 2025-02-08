@@ -28,6 +28,9 @@ export interface Card {
   humanReadableCardType?: string;
   frameType: string;
   desc: string;
+  monster_desc?: string;
+  pend_desc?: string;
+  scale: number;
   race: string;
   attribute?: string;
   atk?: number;
