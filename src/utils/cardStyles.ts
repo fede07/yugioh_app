@@ -1,79 +1,127 @@
-export const cardStyles: Record<string ,{ bg: string;title: string;borderTop: string;descBg: string; borderDesc: string }> = {
-  "Normal Monster": {
-    bg: "bg-amber-300" ,
-    title: "text-black" ,
-    borderTop: "border-yellow-700" ,
+export const cardStyles: Record<string,
+    { bg: string; title: string; borderTopL: string; borderTopR: string; descBg: string; borderDesc: string }> = {
+  normal: {
+    bg: "bg-amber-300",
+    title: "text-black",
+    borderTopL: "border-l-amber-200 border-t-amber-200",
+    borderTopR: "border-amber-600",
     descBg: "bg-yellow-100",
-    borderDesc: "border-orange-600"
+    borderDesc: "border-orange-600",
   },
-  "Effect Monster": {
-    bg: "bg-orange-400" ,
-    title: "text-black" ,
-    borderTop: "border-orange-500" ,
+  effect: {
+    bg: "bg-orange-400",
+    title: "text-black",
+    borderTopL: "border-l-orange-200 border-t-orange-200",
+    borderTopR: "border-orange-500",
     descBg: "bg-orange-100",
-    borderDesc: "border-orange-600"
+    borderDesc: "border-orange-600",
   },
-  "Fusion Monster": {
-    bg: "bg-violet-500" ,
-    title: "text-white" ,
-    borderTop: "border-purple-800" ,
+  fusion: {
+    bg: "bg-purple-600",
+    title: "text-amber-400",
+    borderTopL: "border-l-purple-400 border-t-purple-400",
+    borderTopR: "border-violet-800",
     descBg: "bg-purple-200",
-    borderDesc: "border-orange-600"
+    borderDesc: "border-orange-600",
   },
-  "Synchro Monster": {
-    bg: "bg-gray-300" ,
-    title: "text-black" ,
-    borderTop: "border-gray-500" ,
+  synchro: {
+    bg: "bg-gray-300",
+    title: "text-black",
+    borderTopL: "border-l-gray-200 border-t-gray-200",
+    borderTopR: "border-gray-500",
     descBg: "bg-gray-200",
-    borderDesc: "border-orange-600"
+    borderDesc: "border-orange-600",
   },
-  "XYZ Monster": {
-    bg: "bg-slate-900" ,
-    title: "text-yellow-400" ,
-    borderTop: "border-slate-600" ,
+  xyz: {
+    bg: "bg-slate-900",
+    title: "text-yellow-400",
+    borderTopL: "border-l-slate-300 border-t-slate-300",
+    borderTopR: "border-slate-600",
     descBg: "bg-gray-300",
-    borderDesc: "border-orange-600"
+    borderDesc: "border-orange-600",
   },
-  "Link Monster": {
-    bg: "bg-blue-500" ,
-    title: "text-white" ,
-    borderTop: "border-blue-800" ,
+  link: {
+    bg: "bg-blue-500",
+    title: "text-white",
+    borderTopL: "border-l-blue-300 border-t-blue-300",
+    borderTopR: "border-blue-800",
     descBg: "bg-blue-200",
-    borderDesc: "border-orange-600"
+    borderDesc: "border-orange-600",
   },
-  "Spell Card": {
-    bg: "bg-teal-600" ,
-    title: "text-white" ,
-    borderTop: "border-teal-800" ,
+  spell: {
+    bg: "bg-teal-600",
+    title: "text-white",
+    borderTopL: "border-l-teal-400 border-t-teal-400",
+    borderTopR: "border-teal-800",
     descBg: "bg-teal-200",
-    borderDesc: "border-orange-600"
+    borderDesc: "border-orange-600",
   },
-  "Trap Card": {
-    bg: "bg-pink-500" ,
-    title: "text-white" ,
-    borderTop: "border-pink-800" ,
+  trap: {
+    bg: "bg-pink-500",
+    title: "text-white",
+    borderTopL: "border-l-pink-300 border-t-pink-300",
+    borderTopR: "border-pink-800",
     descBg: "bg-pink-200",
-    borderDesc: "border-orange-600"
+    borderDesc: "border-orange-600",
   },
-  "Pendulum Effect Monster": {
+  effect_pendulum: {
     bg: "bg-gradient-to-b from-orange-400 to-teal-600",
     title: "text-black",
-    borderTop: "border-orange-700",
+    borderTopL: "border-l-orange-300 border-t-orange-300",
+    borderTopR: "border-orange-700",
     borderDesc: "border-grey-600",
     descBg: "bg-teal-200",
   },
+  normal_pendulum: {
+    bg: "bg-gradient-to-b from-amber-300 to-teal-600",
+    title: "text-black",
+    borderTopL: "border-l-amber-200 border-t-amber-200",
+    borderTopR: "border-amber-500",
+    borderDesc: "border-grey-600",
+    descBg: "bg-teal-200",
+  },
+  fusion_pendulum: {
+    bg: "bg-gradient-to-b from-purple-600 to-teal-600",
+    title: "text-black",
+    borderTopL: "border-l-violet-300 border-t-violet-300",
+    borderTopR: "border-violet-700",
+    borderDesc: "border-grey-600",
+    descBg: "bg-teal-200",
+  },
+  ritual_pendulum: {
+    bg: "bg-gradient-to-b from-blue-400 to-teal-600",
+    title: "text-black",
+    borderTopL: "border-l-blue-300 border-t-blue-300",
+    borderTopR: "border-blue-700",
+    borderDesc: "border-grey-600",
+    descBg: "bg-teal-200",
+  },
+  xyz_pendulum: {
+    bg: "bg-gradient-to-b from-slate-900 to-teal-600",
+    title: "text-yellow-400",
+    borderTopL: "border-l-slate-300 border-t-slate-300",
+    borderTopR: "border-slate-600",
+    borderDesc: "border-grey-600",
+    descBg: "bg-teal-200",
+  },
+  ritual: {
+    bg: "bg-blue-400",
+    title: "text-black",
+    borderTopL: "border-l-blue-300 border-t-blue-300",
+    borderTopR: "border-blue-600",
+    descBg: "bg-blue-200",
+    borderDesc: "border-orange-600",
+  },
   default: {
-    bg: "bg-gray-200" ,
-    title: "text-black" ,
-    borderTop: "border-gray-500" ,
+    bg: "bg-gray-200",
+    title: "text-black",
+    borderTopL: "border-gray-100",
+    borderTopR: "border-gray-500",
     descBg: "bg-gray-300",
-    borderDesc: "border-orange-600"
-  }
+    borderDesc: "border-orange-600",
+  },
 }
 
-cardStyles["Flip Effect Monster"] = cardStyles["Effect Monster"]
-cardStyles["Toon Effect Monster"] = cardStyles["Effect Monster"]
-
-export const getCardStyles = (type: string) => {
-  return cardStyles[type] || cardStyles.default
+export const getCardStyles = (frameType: string) => {
+  return cardStyles[frameType] || cardStyles.default
 }

@@ -35,6 +35,8 @@ export interface Card {
   attribute?: string;
   atk?: number;
   def?: number;
+  linkval?: number;
+  linkmarkers?: string[];
   level?: number;
   archetype?: string;
   ygoprodeck_url: string;
