@@ -18,6 +18,18 @@ const POSITIONS = [
   "Top-Left",
 ]
 
+const ATTRIBUTES = [
+  { name: "DARK",   bg: "bg-gradient-to-b from-pink-600 to-purple-600 border-1 border-purple-500", symbol: "闇" },
+  { name: "DIVINE", bg: "bg-gradient-to-b from-amber-500 to-yellow-950 border-1 border-yellow-400",  symbol: "神" },
+  { name: "EARTH",  bg: "bg-gradient-to-b from-grey-900 to-lime-950 ",  symbol: "地" },
+  { name: "FIRE",   bg: "bg-gradient-to-b from-red-400 to-red-600 border-1 border-red-400",    symbol: "炎" },
+  { name: "WATER",  bg: "bg-gradient-to-b from-blue-400 to-blue-700",   symbol: "水" },
+  { name: "WIND",   bg: "bg-gradient-to-b from-green-500 to-green-700", symbol: "風" },
+  { name: "LIGHT",  bg: "bg-gradient-to-b from-amber-500 to-yellow-950 border-1 border-yellow-400",   symbol: "光" },
+  { name: "TRAP",   bg: "bg-gradient-to-b from-pink-600 to-purple-900",   symbol: "罠" },
+  { name: "SPELL",  bg: "bg-gradient-to-b from-teal-600 to-cyan-950",   symbol: "魔" },
+]
+
 const CardComponent = ({card}: CardProps) => {
 
   const {bg ,title ,borderTopR, borderTopL ,descBg ,borderDesc} = getCardStyles(card.frameType)
@@ -27,32 +39,56 @@ const CardComponent = ({card}: CardProps) => {
   const isEffect = card.type.includes("Effect")
   const isMonster = card.type.includes("Monster")
   const isLink = card.type.includes("Link")
-  const isSpellOrTrap = card.type.includes("Spell") || card.type.includes("Trap")
+  const isSpell = card.type.includes("Spell")
+  const isTrap = card.type.includes("Trap")
+  const isXyz = card.type.includes("XYZ")
+  const isSpellOrTrap = isTrap || isSpell
 
   console.log(isPendulum)
   console.log(isNormal)
   console.log(isEffect)
 
+  let attributeData = ATTRIBUTES.find((atr) => atr.name === card.attribute)
+  if (!attributeData) {
+    if (isSpell) {
+      attributeData = ATTRIBUTES.find((atr) => atr.name === "SPELL")
+    } else if (isTrap) {
+      attributeData = ATTRIBUTES.find((atr) => atr.name === "TRAP")
+    } else {
+      attributeData = { name: "", bg: "", symbol: ""}
+    }
+  }
+
   return (
     <Link
       to={`/card/${card.id}`}
-      className={`block border-8 rounded-lg shadow-lg hover:scale-105 transition ${bg} border-gray-600
+      className={`block border-10 rounded-lg shadow-lg hover:scale-105 transition ${bg} border-gray-600
                   w-[300px] h-[425x] flex flex-col space-y-1 p-3`}
     >
       {/* Title */}
-      <div className={`border-2 p-1 pl-1 text-left ${borderTopR} ${borderTopL}`}>
+      <div className={`flex flex-row justify-between border-2 p-1 pl-1 text-left ${borderTopR} ${borderTopL}`}>
         <h2 className={`text-md font-bold truncate ${title}`}>{card.name}</h2>
+        <div className={`${attributeData?.bg} justify-end text-white text-md px-1 rounded-full`}>{attributeData?.symbol}</div>
+
       </div>
 
       {/* Card Type */}
       {(!isMonster) && <p className="text-sm text-right font-semibold pr-4">[{card.type}]</p>}
-      {(card.type != "Trap Card" && card.type != "Spell Card") &&
+      {(!isSpellOrTrap && !isXyz) &&
           <div className="flex justify-end pr-4 text-yellow-500">
             {Array.from({length: card.level || 0} ,(_ ,i) => (
               <span key={i}
-                    className="bg-red-500 rounded-full w-4 h-4 flex items-center justify-center font-bold text-sm">★</span>
+                    className={"bg-gradient-to-br from-orange-500 to-red-700 rounded-full w-4 h-4 flex items-center justify-center font-bold text-md"}>★</span>
             ))}
           </div>
+      }
+
+      {(isXyz) && <div className="flex justify-items-start pr-4 text-yellow-500">
+        {Array.from({length: card.level || 0} ,(_ ,i) => (
+          <span key={i}
+                className={"bg-gradient-to-br from-gray-700 to-gray-900 rounded-full w-4 h-4 flex items-center justify-center font-bold text-md border-1 border-gray-600"}>★</span>
+        ))}
+      </div>
       }
 
       {(isLink) &&
@@ -89,7 +125,8 @@ const CardComponent = ({card}: CardProps) => {
 
       {isPendulum ? (
         <div className="relative">
-          <div className="flex justify-center items-center pr-0 pl-0 pt-0 pb-0 ">
+          {/* Pendulum Description */}
+          <div className="flex justify-center items-center pr-0 pl-0 pt-0 pb-5 ">
             <img
               src={card.card_images[0].image_url_cropped}
               alt={card.name}
@@ -122,16 +159,16 @@ const CardComponent = ({card}: CardProps) => {
                 [{card.typeline?.join("/")}]
               </p>
               <p className="line-clamp-3 pl-1 pr-1">{card.monster_desc}</p>
-              <div className="flex justify-end space-x-1 text-xs border-t-1 ">
-                {card.atk && <p className="text-right text-xs">ATK/{card.atk}</p>}
-                {card.def && <p className="text-right text-xs">DEF/{card.def}</p>}
+              <div className="flex justify-end space-x-1 text-xs border-t-1">
+                {card.atk !== undefined && <p className="text-right text-xs font-semibold">ATK/ {card.atk===-1? " ?" : card.atk}</p>}
+                {card.def !== undefined && <p className="text-right text-xs font-semibold">DEF/ {card.def===-1? " ?" : card.def}</p>}
               </div>
             </div>
           </div>
         </div>
       ) : (
         <>
-          {/* Description */}
+          {/* Description Regular Card*/}
           <div className={`flex flex-col justify-between p-1 border-2 rounded-sm overflow-hidden text-xs ${borderDesc} ${descBg} h-[90px] mt-2`}>
             {isSpellOrTrap? (
               <p className="line-clamp-4">{card.desc}</p>
@@ -142,12 +179,12 @@ const CardComponent = ({card}: CardProps) => {
                 </p>
                 <p className="line-clamp-3">{card.desc}</p>
                 <div className="bottom-0 flex justify-end space-x-1 text-xs border-t-1 ">
-                  {card.atk && <p className="text-right text-xs">ATK/{card.atk===-1? " ?" : card.atk}</p>}
+                  {card.atk !== undefined && <p className="text-right text-xs font-semibold">ATK/ {card.atk===-1? " ?" : card.atk}</p>}
                   {isLink? (
                     <p className="font-extrabold pl-3 pr-2 scale-x-150">LINK-{card.linkval}</p>
                   ) : (
                     <>
-                      {card.def && <p className="text-right text-xs">DEF/{card.def}</p>}
+                      {card.def !== undefined && <p className="text-right text-xs font-semibold">DEF/ {card.def===-1? " ?" : card.def}</p>}
                     </>
                     )}
                 </div>
