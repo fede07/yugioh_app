@@ -18,10 +18,8 @@ const SearchAndFilter = ({ onApplyFilters }: Props) => {
     attribute: '',
     level: null,
     race: '',
-    minAtk: null,
-    maxAtk: null,
-    minDef: null,
-    maxDef: null,
+    atk: null,
+    def: null,
   })
 
   const [isOpen, setIsOpen] = useState(false)
@@ -92,25 +90,37 @@ const SearchAndFilter = ({ onApplyFilters }: Props) => {
       </button>
 
       {isOpen && (
-        <div className="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-3 m-4">
-          <Selector
-            array={CARD_TYPES}
-            name="Type"
-            onChange={(val) => updateFilter('type', val)}
-          />
-          <Selector
-            array={ATTRIBUTES_NAMES}
-            name="Attribute"
-            onChange={(val) => updateFilter('attribute', val)}
-          />
-          <Slider name="Level" onChange={(val) => updateFilter('level', val)} />
-          <Selector
-            array={RACES_MONSTERS}
-            name="Monster Race"
-            onChange={(val) => updateFilter('race', val)}
-          />
-
-          {/* Botones de acción */}
+        <div>
+          <div className="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-3 m-4">
+            <Selector
+              array={CARD_TYPES}
+              name="Type"
+              onChange={(val) => updateFilter('type', val)}
+            />
+            <Selector
+              array={ATTRIBUTES_NAMES}
+              name="Attribute"
+              onChange={(val) => updateFilter('attribute', val)}
+            />
+            <Slider name="Level" onChange={(val) => updateFilter('level', val)} />
+            <Selector
+              array={RACES_MONSTERS}
+              name="Monster Race"
+              onChange={(val) => updateFilter('race', val)}
+            />
+            <input
+              type="number"
+              placeholder="ATK"
+              onChange={(e) => updateFilter('atk', e.target.value)}
+              className="no-arrows"
+            />
+            <input
+              type="number"
+              placeholder="DEF"
+              onChange={(e) => updateFilter('def', e.target.value)}
+              className="no-arrows"
+            />
+          </div>
           <div className="flex justify-center gap-4">
             <button
               className="px-3 py-2 bg-gray-200 text-gray-500 rounded-lg border border-gray-400 w-[100px]"

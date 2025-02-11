@@ -1,2 +1,12 @@
 @import "tailwindcss";
 @tailwind utilities;
+
+.no-arrows {
+    appearance: textfield;
+}
+
+.no-arrows::-webkit-inner-spin-button,
+.no-arrows::-webkit-outer-spin-button {
+    appearance: none;
+    margin: 0;
+}
