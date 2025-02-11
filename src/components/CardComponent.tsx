@@ -2,41 +2,20 @@ import {Link} from "react-router-dom"
 import {Card} from "../types/Card.ts"
 import {getCardStyles} from "../utils/cardStyles.ts"
 import Arrow from "./Arrow.tsx"
+import {ATTRIBUTES_STYLES} from "../constants/cardAttributes.ts"
+import {POSITIONS} from "../constants/arrowPositions.ts"
 
 interface CardProps {
   card: Card
 }
-
-const POSITIONS = [
-  "Top",
-  "Top-Right",
-  "Right",
-  "Bottom-Right",
-  "Bottom",
-  "Bottom-Left",
-  "Left",
-  "Top-Left",
-]
-
-const ATTRIBUTES = [
-  { name: "DARK",   bg: "bg-gradient-to-b from-pink-600 to-purple-600 border-1 border-purple-500", symbol: "闇" },
-  { name: "DIVINE", bg: "bg-gradient-to-b from-amber-500 to-yellow-950 border-1 border-yellow-400",  symbol: "神" },
-  { name: "EARTH",  bg: "bg-gradient-to-b from-grey-900 to-lime-950 ",  symbol: "地" },
-  { name: "FIRE",   bg: "bg-gradient-to-b from-red-400 to-red-600 border-1 border-red-400",    symbol: "炎" },
-  { name: "WATER",  bg: "bg-gradient-to-b from-blue-400 to-blue-700",   symbol: "水" },
-  { name: "WIND",   bg: "bg-gradient-to-b from-green-500 to-green-700", symbol: "風" },
-  { name: "LIGHT",  bg: "bg-gradient-to-b from-amber-500 to-yellow-950 border-1 border-yellow-400",   symbol: "光" },
-  { name: "TRAP",   bg: "bg-gradient-to-b from-pink-600 to-purple-900",   symbol: "罠" },
-  { name: "SPELL",  bg: "bg-gradient-to-b from-teal-600 to-cyan-950",   symbol: "魔" },
-]
 
 const CardComponent = ({card}: CardProps) => {
 
   const {bg ,title ,borderTopR, borderTopL ,descBg ,borderDesc} = getCardStyles(card.frameType)
 
   const isPendulum = card.type.includes("Pendulum")
-  const isNormal = card.type.includes("Normal")
-  const isEffect = card.type.includes("Effect")
+  // const isNormal = card.type.includes("Normal")
+  // const isEffect = card.type.includes("Effect")
   const isMonster = card.type.includes("Monster")
   const isLink = card.type.includes("Link")
   const isSpell = card.type.includes("Spell")
@@ -44,16 +23,12 @@ const CardComponent = ({card}: CardProps) => {
   const isXyz = card.type.includes("XYZ")
   const isSpellOrTrap = isTrap || isSpell
 
-  console.log(isPendulum)
-  console.log(isNormal)
-  console.log(isEffect)
-
-  let attributeData = ATTRIBUTES.find((atr) => atr.name === card.attribute)
+  let attributeData = ATTRIBUTES_STYLES.find((atr) => atr.name === card.attribute)
   if (!attributeData) {
     if (isSpell) {
-      attributeData = ATTRIBUTES.find((atr) => atr.name === "SPELL")
+      attributeData = ATTRIBUTES_STYLES.find((atr) => atr.name === "SPELL")
     } else if (isTrap) {
-      attributeData = ATTRIBUTES.find((atr) => atr.name === "TRAP")
+      attributeData = ATTRIBUTES_STYLES.find((atr) => atr.name === "TRAP")
     } else {
       attributeData = { name: "", bg: "", symbol: ""}
     }
@@ -134,11 +109,11 @@ const CardComponent = ({card}: CardProps) => {
             />
           </div>
 
-          <div className="absolute bottom-0 grid-rows-2 space-y-0 bg-teal-200 border-3 border-gray-700">
+          <div className="absolute bottom-0 grid-rows-2 space-y-0 bg-teal-200 border-3 border-gray-700 text-black">
             <div className="flex flex-row rounded-sm text-xs overflow-hidden">
               {/* Left Pendulum */}
               <div className="flex flex-col px-2 py-1 border-r-3 border-gray-700 font-extrabold">
-                <p className="text-xl text-blue-500"> ←</p>
+                <p className="text-xl text-blue-500 arrow-diamond">←</p>
                 <p className="text-black text-center">{card.scale}</p>
               </div>
 
@@ -169,7 +144,7 @@ const CardComponent = ({card}: CardProps) => {
       ) : (
         <>
           {/* Description Regular Card*/}
-          <div className={`flex flex-col justify-between p-1 border-2 rounded-sm overflow-hidden text-xs ${borderDesc} ${descBg} h-[90px] mt-2`}>
+          <div className={`flex flex-col justify-between p-1 border-2 rounded-sm overflow-hidden text-xs ${borderDesc} ${descBg} h-[90px] mt-2 text-black`}>
             {isSpellOrTrap? (
               <p className="line-clamp-4">{card.desc}</p>
             ):(

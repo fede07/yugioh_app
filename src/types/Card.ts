@@ -21,6 +21,12 @@ export interface CardPrice {
   coolstuffinc_price: string;
 }
 
+export interface CardBanListInfo {
+  ban_tcg: string;
+  ban_ocg: string;
+  ban_goat: string;
+}
+
 export interface Card {
   id: number;
   name: string;
@@ -44,4 +50,5 @@ export interface Card {
   card_sets?: CardSet[];
   card_images: CardImage[];
   card_prices: CardPrice[];
+  banlist_info?: CardBanListInfo;
 }

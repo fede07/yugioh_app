@@ -3,6 +3,7 @@ import {getAllCards  ,getCardsByName} from "../../services/api.tsx"
 import CardComponent from "../../components/CardComponent.tsx"
 import {Card} from "../../types/Card.ts"
 import SearchBar from "../../components/SearchBar.tsx"
+import Filter from "../../components/Filter.tsx"
 
 const Home = () => {
   const [cards, setCards] = useState<Card[]>([])
@@ -37,19 +38,30 @@ const Home = () => {
     setLoading(false)
   }
 
+  const handleFilter = () => {
+
+  }
+
   return (
     <div className="container p-4 m-auto">
-      <h1 className="text-2xl font-bold, text-center, m-4">Yu-Gi-Oh!</h1>
+      <h1 className="flex justify-center text-2xl font-bold, text-center, m-4 text-white">Yu-Gi-Oh!</h1>
 
-      <div className="p-6">
+      <div className="pb-2">
         <SearchBar onSearch={handleSearch}/>
       </div>
 
-      <div className="grid gap-y-3 gap-x-0 justify-center sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 max-w-screen">
-        {cards.map((card) => (
-          <CardComponent key={card.id} card={card} />
-        ))}
+      <Filter onFilterChange={handleFilter}/>
+
+      <div className="border-2 border-gray-400 rounded-md bg-indigo-950 text-white p-4">
+        <div className="grid p-2 gap-2 justify-center sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 max-w-screen">
+            {cards.map((card) => (
+              <CardComponent key={card.id} card={card} />
+            ))}
+
+        </div>
       </div>
+
+
     </div>
   )
 }
