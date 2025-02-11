@@ -1,4 +1,4 @@
-import React ,{useState} from "react"
+import React ,{ ChangeEvent ,useState } from 'react'
 
 interface SearchBarProps {
   onSearch: (query: string) => void
@@ -6,6 +6,11 @@ interface SearchBarProps {
 
 const SearchBar = ({ onSearch }: SearchBarProps) => {
   const [query, setQuery] = useState('')
+
+  const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
+    const value = e.target.value
+    setQuery(value)
+  }
 
   const handleKeydown = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === 'Enter') {
@@ -24,7 +29,7 @@ const SearchBar = ({ onSearch }: SearchBarProps) => {
         type="text"
         placeholder="Search cards..."
         value={query}
-        onChange={(e) => setQuery(e.target.value)}
+        onChange={handleChange}
         onKeyDown={handleKeydown}
         className="flex-1 p-2 rounded-lg border border-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
       />

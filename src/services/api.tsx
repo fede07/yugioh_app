@@ -46,10 +46,10 @@ export const getCardsByArchetype = async (archetype: string): Promise<Card[]> =>
 
 export const getCardsByFilter = async (filter: string): Promise<Card[]> => {
   try {
-    const response = await axios.get(`${BASE_URL}/cardinfo.php?filter=${filter}`)
+    const response = await axios.get(`${BASE_URL}/cardinfo.php?${filter}`)
     return response.data.data
   } catch (error) {
-    console.log(error)
+    console.log((error as Error).message)
     return []
   }
 }

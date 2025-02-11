@@ -1,5 +1,14 @@
-export const cardStyles: Record<string,
-    { bg: string; title: string; borderTopL: string; borderTopR: string; descBg: string; borderDesc: string }> = {
+export const cardStyles: Record<
+  string,
+  {
+    bg: string;
+    title: string;
+    borderTopL: string;
+    borderTopR: string;
+    descBg: string;
+    borderDesc: string;
+  }
+> = {
   normal: {
     bg: "bg-amber-300",
     title: "text-black",
@@ -120,8 +129,8 @@ export const cardStyles: Record<string,
     descBg: "bg-gray-300",
     borderDesc: "border-orange-600",
   },
-}
+};
 
 export const getCardStyles = (frameType: string) => {
-  return cardStyles[frameType] || cardStyles.default
-}
+  return cardStyles[frameType] || cardStyles.default;
+};

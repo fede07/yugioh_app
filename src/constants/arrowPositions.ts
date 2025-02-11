@@ -7,4 +7,4 @@ export const POSITIONS = [
   "Bottom-Left",
   "Left",
   "Top-Left",
-]
+];

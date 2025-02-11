@@ -23,8 +23,8 @@ export const RACES_MONSTERS = [
   "Warrior",
   "Winged Beast",
   "Wyrm",
-  "Zombie"
-]
+  "Zombie",
+];
 
 export const RACES_SPELLS = [
   "Normal",
@@ -32,11 +32,7 @@ export const RACES_SPELLS = [
   "Equip",
   "Continuous",
   "Quick-Play",
-  "Ritual"
-]
+  "Ritual",
+];
 
-export const RACES_TRAPS = [
-  "Normal",
-  "Continuous",
-  "Counter",
-]
+export const RACES_TRAPS = ["Normal", "Continuous", "Counter"];

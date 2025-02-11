@@ -3,11 +3,7 @@
     {
       "id": 37818794,
       "name": "Red-Eyes Dark Dragoon",
-      "typeline": [
-        "Spellcaster",
-        "Fusion",
-        "Effect"
-      ],
+      "typeline": ["Spellcaster", "Fusion", "Effect"],
       "type": "Fusion Monster",
       "humanReadableCardType": "Fusion Effect Monster",
       "frameType": "fusion",
