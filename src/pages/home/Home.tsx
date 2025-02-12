@@ -1,9 +1,11 @@
 import { useEffect, useState } from 'react'
-import { getAllCards, getCardsByFilter } from '../../services/api.tsx'
+import { getAllCards ,getCardsByFilter } from '../../services/api.tsx'
 import CardComponent from '../../components/CardComponent.tsx'
 import { Card } from '../../types/Card.ts'
 import Pagination from '../../components/Pagination.tsx'
 import SearchAndFilter from '../../components/SearchAndFilter.tsx'
+import { LOGO_IMG } from '../../constants/assets.ts'
+// import CardFrame from '../../components/CardFrame.tsx'
 
 const Home = () => {
   const [cards, setCards] = useState<Card[]>([])
@@ -22,6 +24,9 @@ const Home = () => {
 
   useEffect(() => {
     getAllCards()
+    // getCardsLimitOffset(
+    //   cardsPerPage,
+    //   (currentPage - 1) * cardsPerPage)
       .then((data) => {
         setCards(data)
         setLoading(false)
@@ -60,7 +65,6 @@ const Home = () => {
     fetchCards().then(() => {})
   }, [queryParams])
 
-  if (loading) return <div className="text-center">Loading...</div>
   if (error) return <div className="text-center text-red-500">{error}</div>
 
 
@@ -71,20 +75,26 @@ const Home = () => {
 
   return (
     <div className="container p-4 m-auto">
-      <h1 className="flex justify-center text-2xl font-bold, text-center, m-4 text-white">
-        Yu-Gi-Oh!
-      </h1>
+      {/*<h1 className="flex justify-center text-2xl font-bold, text-center, m-4 text-white">*/}
+      {/*  Yu-Gi-Oh!*/}
+      {/*</h1>*/}
 
-      <SearchAndFilter onApplyFilters={setQueryParams}/>
+      <div className={"fixed top-0 left-0 md:pl-8 md:pr-8 lg:pl-16 lg:pr-16 z-50 w-full"}>
+        <SearchAndFilter image={LOGO_IMG} onApplyFilters={setQueryParams}/>
+      </div>
 
-      <div className="border-2 border-gray-400 rounded-md bg-indigo-950 text-white pt-4 sm:pt-3 md:pt-6">
-        {cards.length === 0 && <div className="text-center pb-4">No cards found</div>}
+      <div className="mt-32 border-2 border-gray-400 rounded-md bg-indigo-950 text-white pt-4 sm:pt-3 md:pt-6">
+        {cards.length === 0 && (!loading) && <div className="text-center pb-4">No cards found</div>}
 
-        <div className="grid gap-2 mb-4 place-items-center sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 max-w-screen">
+        {(loading)? (
+          <div className="text-center text-white font-extrabold p-36">Loading...</div>
+        ) : (
+          <div className="grid gap-2 mb-4 place-items-center sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 max-w-screen">
           {currentCards.map((card) => (
             <CardComponent key={card.id} card={card} />
           ))}
-        </div>
+        </div>)}
+
       </div>
       <Pagination
         itemsPerPage={cardsPerPage}

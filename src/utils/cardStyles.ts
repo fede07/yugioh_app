@@ -113,6 +113,14 @@ export const cardStyles: Record<
     borderDesc: "border-grey-600",
     descBg: "bg-teal-200",
   },
+  synchro_pendulum: {
+    bg: "bg-gradient-to-b from-gray-300 to-teal-600",
+    title: "text-black",
+    borderTopL: "border-l-slate-300 border-t-slate-300",
+    borderTopR: "border-slate-600",
+    borderDesc: "border-grey-600",
+    descBg: "bg-teal-200",
+  },
   ritual: {
     bg: "bg-blue-400",
     title: "text-black",
@@ -121,8 +129,16 @@ export const cardStyles: Record<
     descBg: "bg-blue-200",
     borderDesc: "border-orange-600",
   },
+  token: {
+      bg: "bg-gray-300",
+      title: "text-black",
+      borderTopL: "border-gray-100",
+      borderTopR: "border-gray-500",
+      descBg: "bg-gray-100",
+      borderDesc: "border-orange-600",
+  },
   default: {
-    bg: "bg-gray-200",
+    bg: "bg-gray-500",
     title: "text-black",
     borderTopL: "border-gray-100",
     borderTopR: "border-gray-500",

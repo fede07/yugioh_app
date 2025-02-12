@@ -1,15 +1,18 @@
-import { useState } from 'react'
+import React, { useState } from 'react'
 import { CARD_TYPES } from '../constants/cardTypes.ts'
 import { ATTRIBUTES_NAMES } from '../constants/cardAttributes.ts'
 import { RACES_MONSTERS } from '../constants/cardRaces.ts'
 import Selector from './Selector.tsx'
 import Slider from './Slider.tsx'
+import { Link } from 'react-router-dom'
+import { Search } from 'lucide-react'
 
 interface Props {
+  image: string
   onApplyFilters: (query: { search: string; filters: string }) => void
 }
 
-const SearchAndFilter = ({ onApplyFilters }: Props) => {
+const SearchAndFilter = ({ image, onApplyFilters }: Props) => {
   const [search, setSearch] = useState('')
   const [filters, setFilters] = useState<{
     [key: string]: string | number | null
@@ -39,7 +42,7 @@ const SearchAndFilter = ({ onApplyFilters }: Props) => {
 
     onApplyFilters({
       search,
-      filters: filterQuery
+      filters: filterQuery,
     })
   }
 
@@ -67,6 +70,9 @@ const SearchAndFilter = ({ onApplyFilters }: Props) => {
   return (
     <div className="bg-gray-200 rounded-lg p-2 shadow-md mb-4">
       <div className="flex items-center gap-2 p-2 bg-gray-200 rounded-lg shadow-md">
+        <Link to={'/'}>
+          <img src={image} alt={'Logo'} className={'w-12 h-12'} />
+        </Link>
         <input
           type="text"
           placeholder="Search cards..."
@@ -75,6 +81,10 @@ const SearchAndFilter = ({ onApplyFilters }: Props) => {
           onKeyDown={handleKeyDown}
           className="flex-1 p-2 rounded-lg border border-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
         />
+
+        <button onClick={applyFilters} className="p-2 text-green-500 font-bold">
+          <Search strokeWidth="4" color={'#000000'} />
+        </button>
         {search && (
           <button onClick={resetFilters} className="p-2 text-red-500 font-bold">
             ✖
@@ -102,7 +112,10 @@ const SearchAndFilter = ({ onApplyFilters }: Props) => {
               name="Attribute"
               onChange={(val) => updateFilter('attribute', val)}
             />
-            <Slider name="Level" onChange={(val) => updateFilter('level', val)} />
+            <Slider
+              name="Level"
+              onChange={(val) => updateFilter('level', val)}
+            />
             <Selector
               array={RACES_MONSTERS}
               name="Monster Race"

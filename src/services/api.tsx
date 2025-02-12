@@ -53,3 +53,13 @@ export const getCardsByFilter = async (filter: string): Promise<Card[]> => {
     return []
   }
 }
+
+export const getCardsLimitOffset = async (limit: number, offset: number): Promise<Card[]> => {
+  try {
+    const response = await axios.get(`${BASE_URL}/cardinfo.php?num=${limit}&offset=${offset}`)
+    return response.data.data
+  } catch (error) {
+    console.log(error)
+    return []
+  }
+}
