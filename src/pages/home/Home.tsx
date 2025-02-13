@@ -1,5 +1,8 @@
 import { useEffect, useState } from 'react'
-import { getAllCards ,getCardsByFilter } from '../../services/api.tsx'
+import {
+  getCardsByFilterPaginated,
+  getCardsLimitOffset,
+} from '../../services/api.tsx'
 import CardComponent from '../../components/CardComponent.tsx'
 import { Card } from '../../types/Card.ts'
 import Pagination from '../../components/Pagination.tsx'
@@ -21,14 +24,19 @@ const Home = () => {
   })
   const [currentPage, setCurrentPage] = useState(1)
   const [cardsPerPage] = useState(12)
+  const [totalCards, setTotalCards] = useState(1)
 
   useEffect(() => {
-    getAllCards()
-    // getCardsLimitOffset(
-    //   cardsPerPage,
-    //   (currentPage - 1) * cardsPerPage)
+    if (queryParams.search || queryParams.filters) {
+      return
+    }
+    setLoading(true)
+    getCardsLimitOffset(cardsPerPage, (currentPage - 1) * cardsPerPage)
       .then((data) => {
-        setCards(data)
+        setCards(data.data)
+        setTotalCards(data.total)
+        console.log(data)
+
         setLoading(false)
         setRestart(false)
       })
@@ -36,7 +44,7 @@ const Home = () => {
         setError('Cannot load cards.')
         setLoading(false)
       })
-  }, [restart])
+  }, [restart, currentPage, cardsPerPage, queryParams])
 
   useEffect(() => {
     const fetchCards = async () => {
@@ -54,51 +62,68 @@ const Home = () => {
         const queryString = queryParts.join('&')
         console.log('Fetching cards with query:', queryString)
 
-        const result = await getCardsByFilter(queryString)
-        setCards(result || [])
+        if (queryString.length === 0) {
+          setLoading(false)
+          setRestart(true)
+          return
+        }
+
+        const result = await getCardsByFilterPaginated(
+          queryString,
+          cardsPerPage,
+          currentPage * cardsPerPage
+        )
+        console.log(result)
+        setCards(result.data || [])
+        setTotalCards(result.total)
       } catch {
         setError('Cannot load cards.')
       }
       setLoading(false)
-      setCurrentPage(1)
     }
     fetchCards().then(() => {})
-  }, [queryParams])
+  }, [cardsPerPage, currentPage, queryParams])
 
   if (error) return <div className="text-center text-red-500">{error}</div>
 
-
-  const indexOfLastCard = currentPage * cardsPerPage
-  const indexOfFirstCard = indexOfLastCard - cardsPerPage
-  const currentCards = cards.slice(indexOfFirstCard, indexOfLastCard)
   const paginate = (pageNumber: number) => setCurrentPage(pageNumber)
 
   return (
     <div className="container p-4 m-auto">
-      {/*<h1 className="flex justify-center text-2xl font-bold, text-center, m-4 text-white">*/}
-      {/*  Yu-Gi-Oh!*/}
-      {/*</h1>*/}
-
-      <div className={"fixed top-0 left-0 md:pl-8 md:pr-8 lg:pl-16 lg:pr-16 z-50 w-full"}>
-        <SearchAndFilter image={LOGO_IMG} onApplyFilters={setQueryParams}/>
+      <div
+        className={
+          'fixed top-0 left-0 md:pl-8 md:pr-8 lg:pl-16 lg:pr-16 z-50 w-full'
+        }
+      >
+        <SearchAndFilter
+          image={LOGO_IMG}
+          onApplyFilters={(newFilters) => {
+            setQueryParams(newFilters)
+            setCurrentPage(1)
+          }}
+        />
       </div>
 
       <div className="mt-32 border-2 border-gray-400 rounded-md bg-indigo-950 text-white pt-4 sm:pt-3 md:pt-6">
-        {cards.length === 0 && (!loading) && <div className="text-center pb-4">No cards found</div>}
+        {cards.length === 0 && !loading && (
+          <div className="text-center pb-4">No cards found</div>
+        )}
 
-        {(loading)? (
-          <div className="text-center text-white font-extrabold p-36">Loading...</div>
+        {loading ? (
+          <div className="text-center text-white font-extrabold p-36">
+            Loading...
+          </div>
         ) : (
           <div className="grid gap-2 mb-4 place-items-center sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 max-w-screen">
-          {currentCards.map((card) => (
-            <CardComponent key={card.id} card={card} />
-          ))}
-        </div>)}
-
+            {cards.map((card) => (
+              <CardComponent key={card.id} card={card} />
+            ))}
+          </div>
+        )}
       </div>
       <Pagination
         itemsPerPage={cardsPerPage}
-        totalItems={cards.length}
+        totalItems={totalCards}
         currentPage={currentPage}
         paginate={paginate}
       />

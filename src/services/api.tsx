@@ -54,12 +54,45 @@ export const getCardsByFilter = async (filter: string): Promise<Card[]> => {
   }
 }
 
-export const getCardsLimitOffset = async (limit: number, offset: number): Promise<Card[]> => {
+export const getCardsByFilterPaginated = async (filter: string, limit: number, offset: number): Promise<{data: Card[]; total: number}> => {
   try {
+    const response = await axios.get(`${BASE_URL}/cardinfo.php?${filter}&num=${limit}&offset=${offset}`)
+    return {
+      data: response.data.data,
+      total: response.data.meta.total_rows
+    }
+  } catch (error) {
+    console.log((error as Error).message)
+    return {
+      data: [],
+      total: 0
+    }
+  }
+}
+
+export const getCardsLimitOffset = async (limit: number, offset: number): Promise<{data: Card[]; total: number}> => {
+  try {
+    console.log(limit, offset)
     const response = await axios.get(`${BASE_URL}/cardinfo.php?num=${limit}&offset=${offset}`)
-    return response.data.data
+    return {
+      data: response.data.data,
+      total: response.data.meta.total_rows
+    }
   } catch (error) {
     console.log(error)
-    return []
+    return {
+      data: [],
+      total: 0
+    }
+  }
+}
+
+export const getTotalCards = async (): Promise<number> => {
+  try {
+    const response = await axios.get(`${BASE_URL}/cardinfo.php?num=1&offset=0`)
+    return response.data.meta.total_rows
+  } catch (error) {
+    console.log(error)
+    return 0
   }
 }

@@ -23,18 +23,6 @@ const CardComponent = ({ card }: CardProps) => {
   const isXyz = card.type.includes("XYZ");
   const isSpellOrTrap = isTrap || isSpell;
 
-  // let attributeData = ATTRIBUTES_STYLES.find(
-  //   (atr) => atr.name === card.attribute,
-  // );
-  // if (!attributeData) {
-  //   if (isSpell) {
-  //     attributeData = ATTRIBUTES_STYLES.find((atr) => atr.name === "SPELL");
-  //   } else if (isTrap) {
-  //     attributeData = ATTRIBUTES_STYLES.find((atr) => atr.name === "TRAP");
-  //   } else {
-  //     attributeData = { name: "", bg: "", symbol: "" };
-  //   }
-  // }
 
   return (
     <Link
@@ -48,12 +36,6 @@ const CardComponent = ({ card }: CardProps) => {
       >
         <h2 className={`text-md font-bold truncate ${title}`}>{card.name}</h2>
         <AttributeIcon card={card} />
-        {/*<AttributeIcon bg={attributeData?.bg} symbol={attributeData?.symbol} />*/}
-        {/*<div*/}
-        {/*  className={`${attributeData?.bg} justify-end text-white text-md px-1 rounded-full`}*/}
-        {/*>*/}
-        {/*  {attributeData?.symbol}*/}
-        {/*</div>*/}
       </div>
 
       {/* Card Type */}
