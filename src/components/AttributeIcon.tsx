@@ -21,8 +21,8 @@ const AttributeIcon = ({ card }: AttributeIconProps) => {
   }
 
   return (
-    <div className={`text-white text-md px-1 rounded-full h-[28px] w-[28px] ${attributeData?.bg}`}>
-      <span className="text-white text-xl">{attributeData?.symbol}</span>
+    <div className={`text-white text-md px-1 rounded-full h-[24px] w-[24px] ${attributeData?.bg}`}>
+      <p className={'text-center'}>{attributeData?.symbol}</p>
     </div>
   )
 }

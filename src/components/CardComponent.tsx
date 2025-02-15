@@ -1,28 +1,27 @@
-import { Link } from "react-router-dom";
-import { Card } from "../types/Card.ts";
-import { getCardStyles } from "../utils/cardStyles.ts";
-import Arrow from "./Arrow.tsx";
-import { POSITIONS } from "../constants/arrowPositions.ts";
+import { Link } from 'react-router-dom'
+import { Card } from '../types/Card.ts'
+import { getCardStyles } from '../utils/cardStyles.ts'
+import Arrow from './Arrow.tsx'
+import { POSITIONS } from '../constants/arrowPositions.ts'
 import AttributeIcon from './AttributeIcon.tsx'
 
 interface CardProps {
-  card: Card;
+  card: Card
 }
 
 const CardComponent = ({ card }: CardProps) => {
   const { bg, title, borderTopR, borderTopL, descBg, borderDesc } =
-    getCardStyles(card.frameType);
+    getCardStyles(card.frameType)
 
-  const isPendulum = card.type.includes("Pendulum");
+  const isPendulum = card.type.includes('Pendulum')
   // const isNormal = card.type.includes("Normal")
   // const isEffect = card.type.includes("Effect")
-  const isMonster = card.type.includes("Monster");
-  const isLink = card.type.includes("Link");
-  const isSpell = card.type.includes("Spell");
-  const isTrap = card.type.includes("Trap");
-  const isXyz = card.type.includes("XYZ");
-  const isSpellOrTrap = isTrap || isSpell;
-
+  const isMonster = card.type.includes('Monster')
+  const isLink = card.type.includes('Link')
+  const isSpell = card.type.includes('Spell')
+  const isTrap = card.type.includes('Trap')
+  const isXyz = card.type.includes('XYZ')
+  const isSpellOrTrap = isTrap || isSpell
 
   return (
     <Link
@@ -48,7 +47,7 @@ const CardComponent = ({ card }: CardProps) => {
             <span
               key={i}
               className={
-                "bg-gradient-to-br from-orange-500 to-red-700 rounded-full w-4 h-4 flex items-center justify-center font-bold text-md"
+                'bg-gradient-to-br from-orange-500 to-red-700 rounded-full w-4 h-4 flex items-center justify-center font-bold text-md'
               }
             >
               ★
@@ -63,7 +62,7 @@ const CardComponent = ({ card }: CardProps) => {
             <span
               key={i}
               className={
-                "bg-gradient-to-br from-gray-700 to-gray-900 rounded-full w-4 h-4 flex items-center justify-center font-bold text-md border-1 border-gray-600"
+                'bg-gradient-to-br from-gray-700 to-gray-900 rounded-full w-4 h-4 flex items-center justify-center font-bold text-md border-1 border-gray-600'
               }
             >
               ★
@@ -87,14 +86,14 @@ const CardComponent = ({ card }: CardProps) => {
           {isLink ? (
             <div className="absolute inset-0 flex items-center justify-center">
               {POSITIONS?.map((pos, idx) => {
-                const isActive = card.linkmarkers?.includes(pos);
+                const isActive = card.linkmarkers?.includes(pos)
                 return (
                   <Arrow
                     position={pos}
                     isActive={Boolean(isActive)}
                     key={idx}
                   />
-                );
+                )
               })}
             </div>
           ) : (
@@ -140,18 +139,18 @@ const CardComponent = ({ card }: CardProps) => {
             {/* Spell Description */}
             <div className="p-0 text-xs border-t-3 border-gray-700">
               <p className={`font-bold pl-1 pr-1 ${borderDesc}`}>
-                [{card.typeline?.join("/")}]
+                [{card.typeline?.join('/')}]
               </p>
               <p className="line-clamp-3 pl-1 pr-1">{card.monster_desc}</p>
               <div className="flex justify-end space-x-1 text-xs border-t-1">
                 {card.atk !== undefined && (
                   <p className="text-right text-xs font-semibold">
-                    ATK/ {card.atk === -1 ? " ?" : card.atk}
+                    ATK/ {card.atk === -1 ? ' ?' : card.atk}
                   </p>
                 )}
                 {card.def !== undefined && (
                   <p className="text-right text-xs font-semibold">
-                    DEF/ {card.def === -1 ? " ?" : card.def}
+                    DEF/ {card.def === -1 ? ' ?' : card.def}
                   </p>
                 )}
               </div>
@@ -169,13 +168,13 @@ const CardComponent = ({ card }: CardProps) => {
             ) : (
               <>
                 <p className="line-clamp-3 font-semibold">
-                  [{card.typeline?.join("/")}]
+                  [{card.typeline?.join('/')}]
                 </p>
                 <p className="line-clamp-3">{card.desc}</p>
                 <div className="bottom-0 flex justify-end space-x-1 text-xs border-t-1 ">
                   {card.atk !== undefined && (
                     <p className="text-right text-xs font-semibold">
-                      ATK/ {card.atk === -1 ? " ?" : card.atk}
+                      ATK/ {card.atk === -1 ? ' ?' : card.atk}
                     </p>
                   )}
                   {isLink ? (
@@ -186,7 +185,7 @@ const CardComponent = ({ card }: CardProps) => {
                     <>
                       {card.def !== undefined && (
                         <p className="text-right text-xs font-semibold">
-                          DEF/ {card.def === -1 ? " ?" : card.def}
+                          DEF/ {card.def === -1 ? ' ?' : card.def}
                         </p>
                       )}
                     </>
@@ -198,7 +197,7 @@ const CardComponent = ({ card }: CardProps) => {
         </>
       )}
     </Link>
-  );
-};
+  )
+}
 
-export default CardComponent;
+export default CardComponent

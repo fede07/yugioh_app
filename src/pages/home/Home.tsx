@@ -3,12 +3,14 @@ import {
   getCardsByFilterPaginated,
   getCardsLimitOffset,
 } from '../../services/api.tsx'
-import CardComponent from '../../components/CardComponent.tsx'
 import { Card } from '../../types/Card.ts'
 import Pagination from '../../components/Pagination.tsx'
 import SearchAndFilter from '../../components/SearchAndFilter.tsx'
 import { LOGO_IMG } from '../../constants/assets.ts'
-// import CardFrame from '../../components/CardFrame.tsx'
+import CardFrame from '../../components/CardFrame.tsx'
+import Loader from '../../components/Loader.tsx'
+
+const CARDS_PER_PAGE = 12
 
 const Home = () => {
   const [cards, setCards] = useState<Card[]>([])
@@ -23,8 +25,9 @@ const Home = () => {
     filters: '',
   })
   const [currentPage, setCurrentPage] = useState(1)
-  const [cardsPerPage] = useState(12)
+  const [cardsPerPage] = useState(CARDS_PER_PAGE)
   const [totalCards, setTotalCards] = useState(1)
+  const [advancedFiltersOpen, setAdvancedFiltersOpen] = useState(false)
 
   useEffect(() => {
     if (queryParams.search || queryParams.filters) {
@@ -71,7 +74,7 @@ const Home = () => {
         const result = await getCardsByFilterPaginated(
           queryString,
           cardsPerPage,
-          currentPage * cardsPerPage
+          (currentPage - 1) * cardsPerPage
         )
         console.log(result)
         setCards(result.data || [])
@@ -90,43 +93,48 @@ const Home = () => {
 
   return (
     <div className="container p-4 m-auto">
-      <div
-        className={
-          'fixed top-0 left-0 md:pl-8 md:pr-8 lg:pl-16 lg:pr-16 z-50 w-full'
-        }
-      >
+      <div className={'max-w-full top-0 left-0 right-0 z-50 bg-gray-900'}>
         <SearchAndFilter
           image={LOGO_IMG}
           onApplyFilters={(newFilters) => {
             setQueryParams(newFilters)
             setCurrentPage(1)
           }}
+          onShowAdvanced={() => {
+            setAdvancedFiltersOpen(!advancedFiltersOpen)
+          }}
         />
       </div>
 
-      <div className="mt-32 border-2 border-gray-400 rounded-md bg-indigo-950 text-white pt-4 sm:pt-3 md:pt-6">
+      <div
+        className={`${advancedFiltersOpen ? 'mt-4' : 'mt-16'} border-2 border-gray-400 rounded-md bg-indigo-950 text-white pt-4 sm:pt-3 md:pt-6`}
+      >
         {cards.length === 0 && !loading && (
           <div className="text-center pb-4">No cards found</div>
         )}
 
         {loading ? (
-          <div className="text-center text-white font-extrabold p-36">
-            Loading...
+          <div className="text-center p-36">
+            <Loader/>
           </div>
         ) : (
           <div className="grid gap-2 mb-4 place-items-center sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 max-w-screen">
             {cards.map((card) => (
-              <CardComponent key={card.id} card={card} />
+              <CardFrame key={card.id} card={card} />
             ))}
           </div>
         )}
       </div>
-      <Pagination
-        itemsPerPage={cardsPerPage}
-        totalItems={totalCards}
-        currentPage={currentPage}
-        paginate={paginate}
-      />
+      {loading ? (
+        <div></div>
+      ) : (
+        <Pagination
+          itemsPerPage={cardsPerPage}
+          totalItems={totalCards}
+          currentPage={currentPage}
+          paginate={paginate}
+        />
+      )}
     </div>
   )
 }

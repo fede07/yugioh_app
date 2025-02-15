@@ -1,8 +1,7 @@
 import { Card } from '../types/Card.ts'
 import AttributeIcon from './AttributeIcon.tsx'
-import Description from './Description.tsx'
 
-interface DefaultCardFrameProps {
+interface SpellTrapCardFrameProps {
   card: Card
   style: {
     bg: string
@@ -14,8 +13,7 @@ interface DefaultCardFrameProps {
   }
 }
 
-const DefaultCardFrame = ({ card, style }: DefaultCardFrameProps) => {
-
+export const SpellTrapCardFrame = ({ card, style }: SpellTrapCardFrameProps) => {
   return (
     <div
       className={`block border-10 rounded-lg shadow-lg ${style.bg} border-gray-600
@@ -29,17 +27,8 @@ const DefaultCardFrame = ({ card, style }: DefaultCardFrameProps) => {
       </div>
 
 
-      <div className="flex justify-end pr-4 text-yellow-500">
-        {Array.from({ length: card.level || 0 }, (_, i) => (
-          <span
-            key={i}
-            className={
-              "bg-gradient-to-br from-orange-500 to-red-700 rounded-full w-4 h-4 flex items-center justify-center font-bold text-md"
-            }
-          >
-              ★
-            </span>
-        ))}
+      <div>
+        <p className="text-sm text-right font-semibold pr-4 text-black">[{card.type}]</p>
       </div>
 
       {/* Imagen */}
@@ -49,17 +38,20 @@ const DefaultCardFrame = ({ card, style }: DefaultCardFrameProps) => {
             src={card.card_images[0].image_url_cropped}
             alt={card.name}
             className={`w-full object-contain rounded-sm border-4 border-gray-700`}
-            onError={(e) => {
-              (e.target as HTMLImageElement).src = 'public/image-off.png'
-            }}
           />
         </div>
       </div>
 
       {/* Descripción */}
-      <Description card={card} style={style} isPendulum={false}/>
+      <div
+        className={`p-2 border-2 rounded-sm text-xs ${style.borderDesc} ${style.descBg} h-[90px] mt-2 text-black`}
+      >
+        <p className="line-clamp-3">{card.desc}</p>
+        <div className="flex justify-end space-x-1 text-xs">
+          {card.atk !== undefined && <p>ATK/ {card.atk}</p>}
+          {card.def !== undefined && <p>DEF/ {card.def}</p>}
+        </div>
+      </div>
     </div>
   )
 }
-
-export default DefaultCardFrame

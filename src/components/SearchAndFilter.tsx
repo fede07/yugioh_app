@@ -10,9 +10,10 @@ import { Search } from 'lucide-react'
 interface Props {
   image: string
   onApplyFilters: (query: { search: string; filters: string }) => void
+  onShowAdvanced: () => void
 }
 
-const SearchAndFilter = ({ image, onApplyFilters }: Props) => {
+const SearchAndFilter = ({ image, onApplyFilters, onShowAdvanced }: Props) => {
   const [search, setSearch] = useState('')
   const [filters, setFilters] = useState<{
     [key: string]: string | number | null
@@ -67,9 +68,14 @@ const SearchAndFilter = ({ image, onApplyFilters }: Props) => {
     }
   }
 
+  const toggleFilters = () => {
+    setIsOpen(!isOpen)
+    onShowAdvanced()
+  }
+
   return (
-    <div className="bg-gray-200 rounded-lg p-2 shadow-md mb-4">
-      <div className="flex items-center gap-2 p-2 bg-gray-200 rounded-lg shadow-md">
+    <div className=" container bg-gray-200 rounded-lg shadow-md mb-4 m-auto">
+      <div className="fixed xl:mx-44 top-0 left-0 right-0 z-50 flex items-center gap-2 p-2 bg-gray-200 rounded-lg shadow-md">
         <Link to={'/'}>
           <img src={image} alt={'Logo'} className={'w-12 h-12'} />
         </Link>
@@ -90,18 +96,18 @@ const SearchAndFilter = ({ image, onApplyFilters }: Props) => {
             ✖
           </button>
         )}
+
+        <button
+          onClick={toggleFilters}
+          className="px-3 py-2 bg-gray-200 text-gray-500 rounded-lg mt-2 text-center justify-center -translate-y-1"
+        >
+          {isOpen ? '▲' : '▼'}
+        </button>
       </div>
 
-      <button
-        onClick={() => setIsOpen(!isOpen)}
-        className="px-3 py-2 bg-gray-200 text-gray-500 rounded-lg mt-2"
-      >
-        {isOpen ? 'Hide Filters ▲' : 'Show Filters ▼'}
-      </button>
-
       {isOpen && (
-        <div>
-          <div className="grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-3 m-4">
+        <div className={'p-4'}>
+          <div className="pt-12 grid grid-cols-1 sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-3 m-4">
             <Selector
               array={CARD_TYPES}
               name="Type"

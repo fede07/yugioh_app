@@ -2,10 +2,10 @@ import { useEffect, useState } from 'react'
 import { getCardById, getCardsByArchetype } from '../../services/api.tsx'
 import { Link, useParams } from 'react-router-dom'
 import { Card } from '../../types/Card.ts'
-import CardComponent from '../../components/CardComponent.tsx'
-import { LOGO_IMG_PUBLIC } from '../../constants/assets.ts'
-import NavigationBar from '../../components/NavigationBar.tsx'
 import AttributeIcon from '../../components/AttributeIcon.tsx'
+import CardFrame from '../../components/CardFrame.tsx'
+import Loader from '../../components/Loader.tsx'
+import { Undo2 } from 'lucide-react'
 
 const CardDetail = () => {
   const { id } = useParams<{ id: string }>()
@@ -31,36 +31,52 @@ const CardDetail = () => {
     }
   }, [card?.archetype, card?.id, id])
 
-  if (loading) return <div className="text-center">Loading...</div>
+  if (loading)
+    return (
+      <div className="flex flex-col justify-center place-items-center h-screen w-full">
+        <Loader />
+      </div>
+    )
   if (!card || !card.id)
-    return <div className="text-center text-white">Card not found</div>
+    return (
+      <div className="text-center text-white flex flex-col justify-center place-items-center h-screen w-full">
+        Card not found
+      </div>
+    )
 
   const hasAttack = !!card.atk
   const hasDefense = !!card.def
 
   return (
-    <div className="flex flex-col mx-auto p-8 ">
-      <NavigationBar image={LOGO_IMG_PUBLIC}/>
-      <div className="container mx-auto p-4 bg-gray-900 rounded-md border-2 border-gray-400">
-        <div className="flex flex-col md:flex-row gap-4">
-          <div>
-            <CardComponent card={card} />
+    <div className="flex flex-col mx-auto place-items-center p-8 h-screen w-full">
+      <div className="container mx-auto p-4 bg-gray-900 rounded-md border-2 border-gray-400 relative">
+        <Link
+          className={
+            'absolute top-1 right-1 z-50 bg-indigo-950 border-gray-400 border-2 p-4 rounded-md'
+          }
+          to={'/'}
+        >
+          <Undo2 color="#ffffff" strokeWidth={2.25} size={42} />
+        </Link>
+        <div className="flex flex-col md:flex-row gap-4 py-3">
+          <div className={'content-center scale-80 sm:scale-100 md:scale-100'}>
+            <CardFrame card={card} />
           </div>
 
-          <div className="flex-row w-full p-1 border-2 border-gray-400 rounded-md bg-indigo-950 text-white">
+          <div className="flex-row w-full py-6 border-2 border-gray-400 rounded-md bg-indigo-950 text-white">
             {/*Title*/}
-            <div className="flex flex-row justify-between">
+            <div className="flex flex-row justify-items-start text-center justify-center">
               <h1 className="text-2xl font-bold, text-center, m-4">
                 {card.name}
               </h1>
               <div className={'p-4 scale-150'}>
                 <AttributeIcon card={card} />
               </div>
-
             </div>
             {/*Info*/}
             <div className="flex flex-col p-4">
-              <p>Level {card.level}</p>
+              {(card.level !== null && card.level !== undefined) ? <p>Level {card.level}</p> : <span />}
+              {(card.linkval !== undefined) ? <p>LINK-{card.linkval}</p> : <span />}
               <p>{card.race} </p>
               <p>{card.attribute}</p>
               <div className="flex-col">
@@ -76,7 +92,7 @@ const CardDetail = () => {
                 )}
               </div>
             </div>
-            <div className={'p-4'}>
+            <div className={'p-4 justify-items-start justify-center'}>
               <p>{card.typeline?.join('/')}</p>
               {card.desc.split(/\r\n/).map((line, index) => (
                 <p key={index}>{line}</p>
@@ -86,7 +102,7 @@ const CardDetail = () => {
         </div>
         {/*Ban Info*/}
         <div className="p-4 border-2 border-gray-400 rounded-md bg-indigo-950 text-white">
-          <h2>Banlist</h2>
+          <h2 className={'font-semibold text-lg'}>Banlist</h2>
           {card.banlist_info ? (
             <div className="p-2">
               <p>OCG: {card.banlist_info?.ban_ocg}</p>
@@ -103,11 +119,15 @@ const CardDetail = () => {
             'p-4 border-2 border-gray-400 rounded-md bg-indigo-950 text-white'
           }
         >
-          <h2>Related cards</h2>
+          <h2 className={'font-semibold text-lg'} >Related cards</h2>
           <ul className={'grid grid-cols-3 p-2'}>
             {relatedCards.map((relCard) => (
               <li key={relCard.id} className={'p-0'}>
-                <Link to={`/card/${relCard.id}`}>{relCard.name}</Link>
+                <Link to={`/card/${relCard.id}`}>
+                  <div className={'p-2 border-2 border-gray-400 rounded-md truncate hover:bg-indigo-900'}>
+                    {relCard.name}
+                  </div>
+                </Link>
               </li>
             ))}
           </ul>

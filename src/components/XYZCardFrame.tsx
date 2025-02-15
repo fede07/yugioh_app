@@ -1,8 +1,8 @@
-import { Card } from '../types/Card.ts'
 import AttributeIcon from './AttributeIcon.tsx'
+import { Card } from '../types/Card.ts'
 import Description from './Description.tsx'
 
-interface DefaultCardFrameProps {
+interface XYZCardFrameProps {
   card: Card
   style: {
     bg: string
@@ -14,8 +14,7 @@ interface DefaultCardFrameProps {
   }
 }
 
-const DefaultCardFrame = ({ card, style }: DefaultCardFrameProps) => {
-
+export const XYZCardFrame = ({ card, style }: XYZCardFrameProps) => {
   return (
     <div
       className={`block border-10 rounded-lg shadow-lg ${style.bg} border-gray-600
@@ -29,12 +28,12 @@ const DefaultCardFrame = ({ card, style }: DefaultCardFrameProps) => {
       </div>
 
 
-      <div className="flex justify-end pr-4 text-yellow-500">
+      <div className="flex justify-items-start pr-4 text-yellow-500">
         {Array.from({ length: card.level || 0 }, (_, i) => (
           <span
             key={i}
             className={
-              "bg-gradient-to-br from-orange-500 to-red-700 rounded-full w-4 h-4 flex items-center justify-center font-bold text-md"
+              'bg-gradient-to-br from-gray-700 to-gray-900 rounded-full w-4 h-4 flex items-center justify-center font-bold text-md border-1 border-gray-600'
             }
           >
               ★
@@ -49,9 +48,6 @@ const DefaultCardFrame = ({ card, style }: DefaultCardFrameProps) => {
             src={card.card_images[0].image_url_cropped}
             alt={card.name}
             className={`w-full object-contain rounded-sm border-4 border-gray-700`}
-            onError={(e) => {
-              (e.target as HTMLImageElement).src = 'public/image-off.png'
-            }}
           />
         </div>
       </div>
@@ -62,4 +58,4 @@ const DefaultCardFrame = ({ card, style }: DefaultCardFrameProps) => {
   )
 }
 
-export default DefaultCardFrame
+export default XYZCardFrame
