@@ -52,69 +52,78 @@ const CardDetail = () => {
     )
 
   return (
-    <div className="flex flex-col gap-4 mx-auto place-items-center p-8 h-screen w-full">
+    <div className="flex flex-col gap-4 mx-auto place-items-center p-4 sm:p-8 min-h-screen w-full">
       <div className="container mx-auto p-4 bg-gray-900 rounded-md border-2 border-gray-400 relative">
+        {/* BACK BUTTON */}
         <Link
-          className={
-            'absolute top-1 right-1 z-50 bg-indigo-950 border-gray-400 border-2 p-4 rounded-md'
-          }
-          to={'/'}
+          className="absolute top-2 right-2 z-50 bg-indigo-950/80 hover:bg-indigo-800 border-gray-400 border-2 p-3 sm:p-4 rounded-md transition-colors"
+          to="/"
         >
-          <Undo2 color="#ffffff" strokeWidth={2.25} size={42} />
+          <Undo2 color="#ffffff" strokeWidth={2.25} size={32} />
         </Link>
-        <div className="flex flex-col md:flex-row gap-4 py-3">
-          <div className={'content-center scale-80 sm:scale-100 md:scale-100'}>
+
+        {/* CARD INFO */}
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 py-3 items-center">
+          <div className="flex justify-center">
             <CardFrame card={card} />
           </div>
-
-          <CardInfo card={card}/>
-
+          <CardInfo card={card} />
         </div>
-        {/*Ban Info*/}
-        <div className="p-4 border-2 border-gray-400 rounded-md bg-indigo-950 text-white font-mono">
-          <h2 className={'font-semibold text-lg'}>Banlist</h2>
+
+        {/* BANLIST */}
+        <div className="p-4 border-2 border-gray-400 rounded-md bg-indigo-950 text-white font-mono mt-4">
+          <h2 className="font-semibold text-lg">Banlist</h2>
           {card.banlist_info ? (
-            <div className="p-2">
-              <p>OCG: {card.banlist_info?.ban_ocg}</p>
-              <p>TCG: {card.banlist_info?.ban_tcg}</p>
-              <p>GOAT: {card.banlist_info?.ban_goat}</p>
+            <div className="p-2 flex gap-2 flex-wrap">
+              <span
+                className={`px-2 py-1 rounded-md text-xs ${card.banlist_info.ban_ocg ? 'bg-red-500' : 'bg-green-500'}`}
+              >
+                OCG: {card.banlist_info.ban_ocg || 'Unlimited'}
+              </span>
+              <span
+                className={`px-2 py-1 rounded-md text-xs ${card.banlist_info.ban_tcg ? 'bg-yellow-500' : 'bg-green-500'}`}
+              >
+                TCG: {card.banlist_info.ban_tcg || 'Unlimited'}
+              </span>
+              <span
+                className={`px-2 py-1 rounded-md text-xs ${card.banlist_info.ban_goat ? 'bg-blue-500' : 'bg-green-500'}`}
+              >
+                GOAT: {card.banlist_info.ban_goat || 'Unlimited'}
+              </span>
             </div>
           ) : (
             <p className="p-2">Unlimited</p>
           )}
         </div>
-        {/*Related Cards*/}
-        <div
-          className={
-            'p-4 border-2 border-gray-400 rounded-md bg-indigo-950 text-white mt-3 font-mono'
-          }
-        >
-          <h2 className={'font-semibold text-lg'}>Related cards</h2>
-          {loadingRelated? (
-            <div className="flex flex-col justify-center place-items-center h[50px] w-full">
+
+        {/* RELATED CARDS */}
+        <div className="p-4 border-2 border-gray-400 rounded-md bg-indigo-950 text-white mt-3 font-mono">
+          <h2 className="font-semibold text-lg">Related Cards</h2>
+          {loadingRelated ? (
+            <div className="flex justify-center items-center h-[50px]">
               <Loader />
             </div>
-          ): (
-           <span>
-             {relatedCards.length === 0 && <p className="p-2">No related cards</p>}
-             <ul className={'grid grid-cols-3 p-2'}>
-            {relatedCards.map((relCard) => (
-              <li key={relCard.id} className={'p-0'}>
-                <Link to={`/card/${relCard.id}`}>
-                  <div
-                    className={
-                      'p-2 border-2 border-gray-400 rounded-md truncate hover:bg-indigo-900'
-                    }
+          ) : relatedCards.length === 0 ? (
+            <p className="p-2">No related cards</p>
+          ) : (
+            <ul className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-3 p-2">
+              {relatedCards.map((relCard) => (
+                <li key={relCard.id}>
+                  <Link
+                    to={`/card/${relCard.id}`}
+                    className="flex items-center gap-2 border-2 border-gray-400 rounded-md p-2 hover:bg-indigo-900 transition-colors"
                   >
-                    {relCard.name}
-                  </div>
-                </Link>
-              </li>
-            ))}
-          </ul>
-           </span>
+                    <img
+                      src={relCard.card_images[0].image_url_small}
+                      alt={relCard.name}
+                      className="w-12 h-auto rounded-sm shadow-md"
+                    />
+                    <span className="truncate">{relCard.name}</span>
+                  </Link>
+                </li>
+              ))}
+            </ul>
           )}
-
         </div>
       </div>
     </div>
