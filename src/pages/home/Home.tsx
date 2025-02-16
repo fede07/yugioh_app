@@ -6,7 +6,7 @@ import {
 import { Card } from '../../types/Card.ts'
 import Pagination from '../../components/Pagination.tsx'
 import SearchAndFilter from '../../components/SearchAndFilter.tsx'
-import { LOGO_IMG } from '../../constants/assets.ts'
+import { LOGO_IMG_PUBLIC } from '../../constants/assets.ts'
 import Loader from '../../components/Loader.tsx'
 import GridView from '../../components/GridView.tsx'
 import ListView from '../../components/ListView.tsx'
@@ -98,7 +98,7 @@ const Home = () => {
     <div className="container p-4 m-auto">
       <div className={'max-w-full top-0 left-0 right-0 z-50 bg-gray-900'}>
         <SearchAndFilter
-          image={LOGO_IMG}
+          image={LOGO_IMG_PUBLIC}
           onApplyFilters={(newFilters) => {
             setQueryParams(newFilters)
             setCurrentPage(1)
