@@ -119,10 +119,14 @@ const Home = () => {
         />
       </div>
 
-      <div className={`${advancedFiltersOpen ? '' : 'mt-12'} flex flex-row justify-between p-4`}>
+      <div className={`${advancedFiltersOpen ? '' : 'mt-12'} grid grid-cols-3 gap-x-2 sm:gap-x-6 md:gap-x-12 p-4 w-auto`}>
         <ChangeViewButton onChange={setGridView}/>
+        <div className={"bg-gray-200 rounded-md p-2 content-center text-center font-bold text-gray-800 shadow-md"}>
+          <p>Total cards: {totalCards}</p>
+        </div>
+
         <div className={'bg-gray-200 rounded-md p-2'}>
-          <Selector array={CARDS_PER_PAGE_ARRAY} name={"Cards per page"} onChange={changePagesPerPage}/>
+          <Selector array={CARDS_PER_PAGE_ARRAY} onChange={changePagesPerPage}/>
         </div>
       </div>
 
