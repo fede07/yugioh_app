@@ -6,11 +6,13 @@ import AttributeIcon from '../../components/AttributeIcon.tsx'
 import CardFrame from '../../components/CardFrame.tsx'
 import Loader from '../../components/Loader.tsx'
 import { Undo2 } from 'lucide-react'
+import CardLevel from '../../components/CardLevel.tsx'
 
 const CardDetail = () => {
   const { id } = useParams<{ id: string }>()
   const [card, setCard] = useState<Card>()
   const [loading, setLoading] = useState(true)
+  const [loadingRelated, setLoadingRelated] = useState(true)
   const [relatedCards, setRelatedCards] = useState<Card[]>([])
 
   useEffect(() => {
@@ -27,7 +29,11 @@ const CardDetail = () => {
       getCardsByArchetype(card.archetype).then((relCards) => {
         const filteredCards = relCards.filter((card) => card.id !== Number(id))
         setRelatedCards(filteredCards)
+        setLoadingRelated(false)
       })
+    } else {
+      setRelatedCards([])
+      setLoadingRelated(false)
     }
   }, [card?.archetype, card?.id, id])
 
@@ -48,7 +54,7 @@ const CardDetail = () => {
   const hasDefense = !!card.def
 
   return (
-    <div className="flex flex-col mx-auto place-items-center p-8 h-screen w-full">
+    <div className="flex flex-col gap-4 mx-auto place-items-center p-8 h-screen w-full">
       <div className="container mx-auto p-4 bg-gray-900 rounded-md border-2 border-gray-400 relative">
         <Link
           className={
@@ -63,9 +69,9 @@ const CardDetail = () => {
             <CardFrame card={card} />
           </div>
 
-          <div className="flex-row w-full py-6 border-2 border-gray-400 rounded-md bg-indigo-950 text-white">
+          <div className="flex-row w-full py-6 border-2 border-gray-400 rounded-md bg-indigo-950 text-white font-mono">
             {/*Title*/}
-            <div className="flex flex-row justify-items-start text-center justify-center">
+            <div className="flex flex-row justify-items-start text-center justify-center font-mono">
               <h1 className="text-2xl font-bold, text-center, m-4">
                 {card.name}
               </h1>
@@ -73,20 +79,30 @@ const CardDetail = () => {
                 <AttributeIcon card={card} />
               </div>
             </div>
+
+            {(card.level)? (
+                <div className={"flex flex-row justify-center scale-150 font-sans"}>
+                  <CardLevel level={card.level} type={card.type}/>
+                </div>
+            ) : (
+              <span/>
+            )}
+
             {/*Info*/}
             <div className="flex flex-col p-4">
+              {(card.type !== undefined) ? <p>Type: {card.type}</p> : <span />}
+              {(card.race !== undefined) ? <p>{card.race}</p> : <span />}
               {(card.level !== null && card.level !== undefined) ? <p>Level {card.level}</p> : <span />}
               {(card.linkval !== undefined) ? <p>LINK-{card.linkval}</p> : <span />}
-              <p>{card.race} </p>
-              <p>{card.attribute}</p>
+              {(card.attribute !== undefined) ? <p>Attribute: {card.attribute}</p> : <span />}
               <div className="flex-col">
                 {hasAttack ? (
-                  <p>ATK/ {card.atk === -1 ? ' ?' : card.atk}</p>
+                  <p>ATK: {card.atk === -1 ? ' ?' : card.atk}</p>
                 ) : (
                   <></>
                 )}
                 {hasDefense ? (
-                  <p>DEF/ {card.def === -1 ? ' ?' : card.def}</p>
+                  <p>DEF: {card.def === -1 ? ' ?' : card.def}</p>
                 ) : (
                   <></>
                 )}
@@ -101,7 +117,7 @@ const CardDetail = () => {
           </div>
         </div>
         {/*Ban Info*/}
-        <div className="p-4 border-2 border-gray-400 rounded-md bg-indigo-950 text-white">
+        <div className="p-4 border-2 border-gray-400 rounded-md bg-indigo-950 text-white font-mono">
           <h2 className={'font-semibold text-lg'}>Banlist</h2>
           {card.banlist_info ? (
             <div className="p-2">
@@ -116,10 +132,18 @@ const CardDetail = () => {
         {/*Related Cards*/}
         <div
           className={
-            'p-4 border-2 border-gray-400 rounded-md bg-indigo-950 text-white'
+            'p-4 border-2 border-gray-400 rounded-md bg-indigo-950 text-white mt-3 font-mono'
           }
         >
           <h2 className={'font-semibold text-lg'} >Related cards</h2>
+          {loadingRelated && (
+            <div className="flex flex-col justify-center place-items-center h-screen w-full">
+              <Loader />
+            </div>
+          )}
+          {!loadingRelated && relatedCards.length === 0 && (
+            <p className="p-2">No related cards</p>
+          )}
           <ul className={'grid grid-cols-3 p-2'}>
             {relatedCards.map((relCard) => (
               <li key={relCard.id} className={'p-0'}>

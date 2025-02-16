@@ -6,7 +6,7 @@ type LevelSliderProps = {
 };
 
 const Slider = ({ name, onChange }: LevelSliderProps) => {
-  const [value, setValue] = useState(1);
+  const [value, setValue] = useState(0);
 
   const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
     const newLevel = Number(event.target.value);
@@ -22,14 +22,14 @@ const Slider = ({ name, onChange }: LevelSliderProps) => {
       <div className="flex flex-col items-center space-y-2">
         <input
           type="range"
-          min="1"
+          min="0"
           max="12"
           value={value}
           onChange={handleChange}
           className="w-full cursor-pointer"
         />
         <label className="text-black text-sm">
-          {elementName}: {value}
+          {elementName}: {value === 0 ? "Any" : value}
         </label>
       </div>
     </label>
