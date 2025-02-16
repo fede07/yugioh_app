@@ -11,8 +11,11 @@ import Loader from '../../components/Loader.tsx'
 import GridView from '../../components/GridView.tsx'
 import ListView from '../../components/ListView.tsx'
 import ChangeViewButton from '../../components/ChangeViewButton.tsx'
+import Selector from '../../components/Selector.tsx'
 
 const CARDS_PER_PAGE = 12
+
+const CARDS_PER_PAGE_ARRAY = ['12', '24', '36']
 
 const Home = () => {
   const [cards, setCards] = useState<Card[]>([])
@@ -27,7 +30,7 @@ const Home = () => {
     filters: '',
   })
   const [currentPage, setCurrentPage] = useState(1)
-  const [cardsPerPage] = useState(CARDS_PER_PAGE)
+  const [cardsPerPage, setCardsPerPage] = useState(CARDS_PER_PAGE)
   const [totalCards, setTotalCards] = useState(1)
   const [advancedFiltersOpen, setAdvancedFiltersOpen] = useState(false)
   const [gridView, setGridView] = useState(true)
@@ -94,6 +97,13 @@ const Home = () => {
 
   const paginate = (pageNumber: number) => setCurrentPage(pageNumber)
 
+  const changePagesPerPage = (newPerPage: string) => {
+    if (!Array.from(CARDS_PER_PAGE_ARRAY).includes(newPerPage)) {
+      return
+    }
+      setCardsPerPage(Number(newPerPage))
+  }
+
   return (
     <div className="container p-4 m-auto">
       <div className={'max-w-full top-0 left-0 right-0 z-50 bg-gray-900'}>
@@ -109,8 +119,11 @@ const Home = () => {
         />
       </div>
 
-      <div className={`${advancedFiltersOpen ? '' : 'mt-12'} flex flex-row justify-start p-4`}>
+      <div className={`${advancedFiltersOpen ? '' : 'mt-12'} flex flex-row justify-between p-4`}>
         <ChangeViewButton onChange={setGridView}/>
+        <div className={'bg-gray-200 rounded-md p-2'}>
+          <Selector array={CARDS_PER_PAGE_ARRAY} name={"Cards per page"} onChange={changePagesPerPage}/>
+        </div>
       </div>
 
       <div

@@ -48,10 +48,10 @@ export const Description = ({ card, style, isPendulum }: DescriptionProps) => {
           <p className="line-clamp-3 px-1">{card.desc}</p>
           <div className="flex justify-end space-x-2 text-xs border-t-1 text-right font-semibold">
             {card.atk !== undefined && (
-              <p className={'pr-1'}>ATK/ {card.atk}</p>
+              <p className={'pr-1'}>ATK/ {card.atk === -1 ? "?" : card.atk}</p>
             )}
             {card.def !== undefined && (
-              <p className={'pr-1'}>DEF/ {card.def}</p>
+              <p className={'pr-1'}>DEF/ {card.def === -1 ? "?" : card.atk}</p>
             )}
           </div>
         </div>
