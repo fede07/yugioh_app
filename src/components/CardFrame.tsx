@@ -21,7 +21,7 @@ const CardComponent = ({ card }: CardProps) => {
   const styles = getCardStyles(card.frameType)
 
   return (
-    <Link to={`/card/${card.id}`} className="block hover:scale-105 transition">
+    <Link to={`/card/${card.id}`} className="block hover:scale-105 transition m-6">
       {isPendulum ? (
         <PendulumCardFrame card={card} style={styles} />
       ) : isLink ? (

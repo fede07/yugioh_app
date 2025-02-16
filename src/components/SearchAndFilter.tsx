@@ -28,8 +28,8 @@ const SearchAndFilter = ({ image, onApplyFilters, onShowAdvanced }: Props) => {
     attribute: '',
     level: null,
     race: '',
-    atk: null,
-    def: null,
+    atk: '',
+    def: '',
   })
 
   const [isOpen, setIsOpen] = useState(false)

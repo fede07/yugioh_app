@@ -2,11 +2,10 @@ import { useEffect, useState } from 'react'
 import { getCardById, getCardsByArchetype } from '../../services/api.tsx'
 import { Link, useParams } from 'react-router-dom'
 import { Card } from '../../types/Card.ts'
-import AttributeIcon from '../../components/AttributeIcon.tsx'
 import CardFrame from '../../components/CardFrame.tsx'
 import Loader from '../../components/Loader.tsx'
 import { Undo2 } from 'lucide-react'
-import CardLevel from '../../components/CardLevel.tsx'
+import { CardInfo } from '../../components/CardInfo.tsx'
 
 const CardDetail = () => {
   const { id } = useParams<{ id: string }>()
@@ -17,6 +16,7 @@ const CardDetail = () => {
 
   useEffect(() => {
     if (id != null) {
+      setLoading(true)
       getCardById(id).then((data) => {
         setCard(data)
         setLoading(false)
@@ -26,6 +26,7 @@ const CardDetail = () => {
 
   useEffect(() => {
     if (card?.archetype) {
+      setLoadingRelated(true)
       getCardsByArchetype(card.archetype).then((relCards) => {
         const filteredCards = relCards.filter((card) => card.id !== Number(id))
         setRelatedCards(filteredCards)
@@ -50,9 +51,6 @@ const CardDetail = () => {
       </div>
     )
 
-  const hasAttack = !!card.atk
-  const hasDefense = !!card.def
-
   return (
     <div className="flex flex-col gap-4 mx-auto place-items-center p-8 h-screen w-full">
       <div className="container mx-auto p-4 bg-gray-900 rounded-md border-2 border-gray-400 relative">
@@ -69,52 +67,8 @@ const CardDetail = () => {
             <CardFrame card={card} />
           </div>
 
-          <div className="flex-row w-full py-6 border-2 border-gray-400 rounded-md bg-indigo-950 text-white font-mono">
-            {/*Title*/}
-            <div className="flex flex-row justify-items-start text-center justify-center font-mono">
-              <h1 className="text-2xl font-bold, text-center, m-4">
-                {card.name}
-              </h1>
-              <div className={'p-4 scale-150'}>
-                <AttributeIcon card={card} />
-              </div>
-            </div>
+          <CardInfo card={card}/>
 
-            {(card.level)? (
-                <div className={"flex flex-row justify-center scale-150 font-sans"}>
-                  <CardLevel level={card.level} type={card.type}/>
-                </div>
-            ) : (
-              <span/>
-            )}
-
-            {/*Info*/}
-            <div className="flex flex-col p-4">
-              {(card.type !== undefined) ? <p>Type: {card.type}</p> : <span />}
-              {(card.race !== undefined) ? <p>{card.race}</p> : <span />}
-              {(card.level !== null && card.level !== undefined) ? <p>Level {card.level}</p> : <span />}
-              {(card.linkval !== undefined) ? <p>LINK-{card.linkval}</p> : <span />}
-              {(card.attribute !== undefined) ? <p>Attribute: {card.attribute}</p> : <span />}
-              <div className="flex-col">
-                {hasAttack ? (
-                  <p>ATK: {card.atk === -1 ? ' ?' : card.atk}</p>
-                ) : (
-                  <></>
-                )}
-                {hasDefense ? (
-                  <p>DEF: {card.def === -1 ? ' ?' : card.def}</p>
-                ) : (
-                  <></>
-                )}
-              </div>
-            </div>
-            <div className={'p-4 justify-items-start justify-center'}>
-              <p>{card.typeline?.join('/')}</p>
-              {card.desc.split(/\r\n/).map((line, index) => (
-                <p key={index}>{line}</p>
-              ))}
-            </div>
-          </div>
         </div>
         {/*Ban Info*/}
         <div className="p-4 border-2 border-gray-400 rounded-md bg-indigo-950 text-white font-mono">
@@ -135,26 +89,32 @@ const CardDetail = () => {
             'p-4 border-2 border-gray-400 rounded-md bg-indigo-950 text-white mt-3 font-mono'
           }
         >
-          <h2 className={'font-semibold text-lg'} >Related cards</h2>
-          {loadingRelated && (
-            <div className="flex flex-col justify-center place-items-center h-screen w-full">
+          <h2 className={'font-semibold text-lg'}>Related cards</h2>
+          {loadingRelated? (
+            <div className="flex flex-col justify-center place-items-center h[50px] w-full">
               <Loader />
             </div>
-          )}
-          {!loadingRelated && relatedCards.length === 0 && (
-            <p className="p-2">No related cards</p>
-          )}
-          <ul className={'grid grid-cols-3 p-2'}>
+          ): (
+           <span>
+             {relatedCards.length === 0 && <p className="p-2">No related cards</p>}
+             <ul className={'grid grid-cols-3 p-2'}>
             {relatedCards.map((relCard) => (
               <li key={relCard.id} className={'p-0'}>
                 <Link to={`/card/${relCard.id}`}>
-                  <div className={'p-2 border-2 border-gray-400 rounded-md truncate hover:bg-indigo-900'}>
+                  <div
+                    className={
+                      'p-2 border-2 border-gray-400 rounded-md truncate hover:bg-indigo-900'
+                    }
+                  >
                     {relCard.name}
                   </div>
                 </Link>
               </li>
             ))}
           </ul>
+           </span>
+          )}
+
         </div>
       </div>
     </div>

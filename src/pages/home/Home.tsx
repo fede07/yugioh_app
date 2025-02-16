@@ -7,8 +7,10 @@ import { Card } from '../../types/Card.ts'
 import Pagination from '../../components/Pagination.tsx'
 import SearchAndFilter from '../../components/SearchAndFilter.tsx'
 import { LOGO_IMG } from '../../constants/assets.ts'
-import CardFrame from '../../components/CardFrame.tsx'
 import Loader from '../../components/Loader.tsx'
+import GridView from '../../components/GridView.tsx'
+import ListView from '../../components/ListView.tsx'
+import ChangeViewButton from '../../components/ChangeViewButton.tsx'
 
 const CARDS_PER_PAGE = 12
 
@@ -28,6 +30,7 @@ const Home = () => {
   const [cardsPerPage] = useState(CARDS_PER_PAGE)
   const [totalCards, setTotalCards] = useState(1)
   const [advancedFiltersOpen, setAdvancedFiltersOpen] = useState(false)
+  const [gridView, setGridView] = useState(true)
 
   useEffect(() => {
     if (queryParams.search || queryParams.filters) {
@@ -106,23 +109,28 @@ const Home = () => {
         />
       </div>
 
+      <div className={`${advancedFiltersOpen ? '' : 'mt-12'} flex flex-row justify-start p-4`}>
+        <ChangeViewButton onChange={setGridView}/>
+      </div>
+
       <div
-        className={`${advancedFiltersOpen ? 'mt-4' : 'mt-16'} border-2 border-gray-400 rounded-md bg-indigo-950 text-white pt-4 sm:pt-3 md:pt-6`}
+        className={` border-2 border-gray-400 rounded-md bg-indigo-950 text-white pt-4 sm:pt-3 md:pt-6`}
       >
+
         {cards.length === 0 && !loading && (
           <div className="text-center pb-4">No cards found</div>
         )}
 
         {loading ? (
           <div className="text-center p-36">
-            <Loader/>
+            <Loader />
           </div>
         ) : (
-          <div className="grid gap-2 mb-4 place-items-center sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 max-w-screen">
-            {cards.map((card) => (
-              <CardFrame key={card.id} card={card} />
-            ))}
-          </div>
+          (gridView) ? (
+              <GridView cards={cards} />
+            ) : (
+              <ListView cards={cards} />
+          )
         )}
       </div>
       {loading ? (
