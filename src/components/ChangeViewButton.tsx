@@ -17,7 +17,7 @@ const ChangeViewButton = ({ onChange }: ChangeViewButtonProps) => {
   return (
     <button
       onClick={toggleView}
-      className="flex items-center gap-2 px-4 py-2 bg-gray-200 text-gray-800 rounded-md shadow-md transition hover:bg-gray-300 hover:scale-105"
+      className="flex items-center gap-2 px-4 py-2 bg-gray-200 text-gray-800 rounded-md shadow-md transition hover:bg-gray-300 hover:cursor-pointer"
     >
       {isListView ?  <List size={20}/> : <Grid size={20}/>}
       <span className="font-semibold">

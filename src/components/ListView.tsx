@@ -15,7 +15,7 @@ export const ListView = ({ cards }: ListViewProps) => {
           className="grid grid-cols-1 sm:grid-cols-2 gap-4 items-center bg-indigo-900 shadow-lg border border-gray-300 rounded-lg overflow-hidden transition-all hover:scale-[1.02] hover:shadow-2xl p-4"
         >
           <div className="flex justify-center">
-            <CardFrame card={card} />
+            <CardFrame card={card} to={`/card/${card.id}`}/>
           </div>
 
           <div className="text-gray-900 font-mono text-center px-4 py-6 sm:py-8">

@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react'
 import { getCardById, getCardsByArchetype } from '../../services/api.tsx'
-import { Link, useParams } from 'react-router-dom'
+import { Link, useNavigate, useParams } from 'react-router-dom'
 import { Card } from '../../types/Card.ts'
 import CardFrame from '../../components/CardFrame.tsx'
 import Loader from '../../components/Loader.tsx'
@@ -13,6 +13,8 @@ const CardDetail = () => {
   const [loading, setLoading] = useState(true)
   const [loadingRelated, setLoadingRelated] = useState(true)
   const [relatedCards, setRelatedCards] = useState<Card[]>([])
+
+  const navigate = useNavigate()
 
   useEffect(() => {
     if (id != null) {
@@ -55,17 +57,17 @@ const CardDetail = () => {
     <div className="flex flex-col gap-4 mx-auto place-items-center p-4 sm:p-8 min-h-screen w-full">
       <div className="container mx-auto p-4 bg-gray-900 rounded-md border-2 border-gray-400 relative">
         {/* BACK BUTTON */}
-        <Link
+        <button
+          onClick={() => navigate(-1)}
           className="absolute top-2 right-2 z-50 bg-indigo-950/80 hover:bg-indigo-800 border-gray-400 border-2 p-3 sm:p-4 rounded-md transition-colors"
-          to="/"
         >
           <Undo2 color="#ffffff" strokeWidth={2.25} size={32} />
-        </Link>
+        </button>
 
         {/* CARD INFO */}
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 py-3 items-center">
           <div className="flex justify-center">
-            <CardFrame card={card} />
+            <CardFrame card={card} to={`/card/${card.id}`} />
           </div>
           <CardInfo card={card} />
         </div>

@@ -12,6 +12,7 @@ import GridView from '../../components/GridView.tsx'
 import ListView from '../../components/ListView.tsx'
 import ChangeViewButton from '../../components/ChangeViewButton.tsx'
 import Selector from '../../components/Selector.tsx'
+import { useNavigate, useSearchParams } from 'react-router-dom'
 
 const CARDS_PER_PAGE = 12
 
@@ -22,18 +23,23 @@ const Home = () => {
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
   const [restart, setRestart] = useState(false)
-  const [queryParams, setQueryParams] = useState<{
-    search?: string
-    filters?: string
-  }>({
-    search: '',
-    filters: '',
-  })
-  const [currentPage, setCurrentPage] = useState(1)
-  const [cardsPerPage, setCardsPerPage] = useState(CARDS_PER_PAGE)
+
   const [totalCards, setTotalCards] = useState(1)
   const [advancedFiltersOpen, setAdvancedFiltersOpen] = useState(false)
   const [gridView, setGridView] = useState(true)
+  const [searchParams, setSearchParams] = useSearchParams()
+  const navigate = useNavigate()
+
+  const [currentPage, setCurrentPage] = useState(
+    Number(searchParams.get('page')) || 1
+  )
+  const [cardsPerPage, setCardsPerPage] = useState(
+    Number(searchParams.get('limit')) || CARDS_PER_PAGE
+  )
+  const [queryParams, setQueryParams] = useState({
+    search: searchParams.get('search') || '',
+    filters: searchParams.get('filters') || '',
+  })
 
   useEffect(() => {
     if (queryParams.search || queryParams.filters) {
@@ -54,6 +60,15 @@ const Home = () => {
         setLoading(false)
       })
   }, [restart, currentPage, cardsPerPage, queryParams])
+
+  useEffect(() => {
+    setSearchParams({
+      search: queryParams.search,
+      filters: queryParams.filters,
+      page: currentPage.toString(),
+      limit: cardsPerPage.toString(),
+    })
+  }, [queryParams, currentPage, cardsPerPage, setSearchParams])
 
   useEffect(() => {
     const fetchCards = async () => {
@@ -93,6 +108,12 @@ const Home = () => {
     fetchCards().then(() => {})
   }, [cardsPerPage, currentPage, queryParams])
 
+  useEffect(() => {
+    navigate(
+      `/?search=${queryParams.search}&filters=${queryParams.filters}&page=${currentPage}&limit=${cardsPerPage}`
+    )
+  }, [queryParams, currentPage, cardsPerPage, navigate])
+
   if (error) return <div className="text-center text-red-500">{error}</div>
 
   const paginate = (pageNumber: number) => setCurrentPage(pageNumber)
@@ -101,7 +122,7 @@ const Home = () => {
     if (!Array.from(CARDS_PER_PAGE_ARRAY).includes(newPerPage)) {
       return
     }
-      setCardsPerPage(Number(newPerPage))
+    setCardsPerPage(Number(newPerPage))
   }
 
   return (
@@ -119,21 +140,29 @@ const Home = () => {
         />
       </div>
 
-      <div className={`${advancedFiltersOpen ? '' : 'mt-12'} grid grid-cols-3 gap-x-2 sm:gap-x-6 md:gap-x-12 p-4 w-auto`}>
-        <ChangeViewButton onChange={setGridView}/>
-        <div className={"bg-gray-200 rounded-md p-2 content-center text-center font-bold text-gray-800 shadow-md"}>
+      <div
+        className={`${advancedFiltersOpen ? '-mt-4' : 'mt-12'} grid grid-cols-3 gap-x-2 sm:gap-x-6 md:gap-x-12 p-4 w-auto`}
+      >
+        <ChangeViewButton onChange={setGridView} />
+        <div
+          className={
+            'bg-gray-200 rounded-md p-2 content-center text-center font-bold text-gray-800 shadow-md'
+          }
+        >
           <p>Total cards: {totalCards}</p>
         </div>
 
         <div className={'bg-gray-200 rounded-md p-2'}>
-          <Selector array={CARDS_PER_PAGE_ARRAY} onChange={changePagesPerPage}/>
+          <Selector
+            array={CARDS_PER_PAGE_ARRAY}
+            onChange={changePagesPerPage}
+          />
         </div>
       </div>
 
       <div
         className={` border-2 border-gray-400 rounded-md bg-indigo-950 text-white pt-4 sm:pt-3 md:pt-6`}
       >
-
         {cards.length === 0 && !loading && (
           <div className="text-center pb-4">No cards found</div>
         )}
@@ -142,12 +171,10 @@ const Home = () => {
           <div className="text-center p-36">
             <Loader />
           </div>
+        ) : gridView ? (
+          <GridView cards={cards} />
         ) : (
-          (gridView) ? (
-              <GridView cards={cards} />
-            ) : (
-              <ListView cards={cards} />
-          )
+          <ListView cards={cards} />
         )}
       </div>
       {loading ? (

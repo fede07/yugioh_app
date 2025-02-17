@@ -9,7 +9,7 @@ import { ATTRIBUTES_NAMES } from '../constants/cardAttributes.ts'
 import { RACES_MONSTERS } from '../constants/cardRaces.ts'
 import Selector from './Selector.tsx'
 import Slider from './Slider.tsx'
-import { Link } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import { Search } from 'lucide-react'
 
 interface Props {
@@ -31,6 +31,8 @@ const SearchAndFilter = ({ image, onApplyFilters, onShowAdvanced }: Props) => {
     atk: '',
     def: '',
   })
+
+  const navigate = useNavigate()
 
   const [isOpen, setIsOpen] = useState(false)
 
@@ -99,6 +101,21 @@ const SearchAndFilter = ({ image, onApplyFilters, onShowAdvanced }: Props) => {
     })
   }
 
+  const backHome = () => {
+    setSearch('')
+    setFilters({
+      type: '',
+      attribute: '',
+      level: null,
+      race: '',
+      atk: null,
+      def: null,
+    })
+    setSelectedCardType(undefined)
+    onApplyFilters({ search: '', filters: '' })
+    navigate("/", { replace: true })
+  }
+
   const toggleFilters = () => {
     setIsOpen(!isOpen)
     onShowAdvanced()
@@ -107,9 +124,9 @@ const SearchAndFilter = ({ image, onApplyFilters, onShowAdvanced }: Props) => {
   return (
     <div className=" container bg-gray-200 rounded-lg shadow-md mb-4 m-auto">
       <div className="fixed xl:mx-44 top-0 left-0 right-0 z-50 flex items-center gap-2 p-2 bg-gray-200 rounded-lg shadow-md">
-        <Link to={'/'}>
+        <button onClick={backHome} className={"hover:cursor-pointer"}>
           <img src={image} alt={'Logo'} className={'w-12 h-12'} />
-        </Link>
+        </button>
         <input
           type="text"
           placeholder="Search cards..."
@@ -130,7 +147,7 @@ const SearchAndFilter = ({ image, onApplyFilters, onShowAdvanced }: Props) => {
 
         <button
           onClick={toggleFilters}
-          className="px-3 py-2 bg-gray-200 text-gray-500 rounded-lg mt-2 text-center justify-center -translate-y-1"
+          className="px-3 py-2 bg-gray-200 text-gray-500 rounded-lg mt-2 text-center justify-center -translate-y-1 hover:cursor-pointer hover:scale-110"
         >
           {isOpen ? '▲' : '▼'}
         </button>

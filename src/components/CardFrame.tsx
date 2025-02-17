@@ -1,4 +1,3 @@
-import { Link } from 'react-router-dom'
 import { Card } from '../types/Card.ts'
 import DefaultCardFrame from './DefaultCardFrame.tsx'
 import PendulumCardFrame from './PendulumCardFrame.tsx'
@@ -6,12 +5,16 @@ import LinkCardFrame from './LinkCardFrame.tsx'
 import { getCardStyles } from '../utils/cardStyles.ts'
 import { SpellTrapCardFrame } from './SpellTrapCardFrame.tsx'
 import XYZCardFrame from './XYZCardFrame.tsx'
+import { useNavigate } from 'react-router-dom'
 
 interface CardProps {
   card: Card
+  to: string
 }
 
-const CardComponent = ({ card }: CardProps) => {
+const CardFrame = ({ card, to }: CardProps) => {
+  const navigate = useNavigate()
+
   const isPendulum = card.type.includes('Pendulum')
   const isLink = card.type.includes('Link')
   const isXYZ = card.type.includes('XYZ')
@@ -21,7 +24,10 @@ const CardComponent = ({ card }: CardProps) => {
   const styles = getCardStyles(card.frameType)
 
   return (
-    <Link to={`/card/${card.id}`} className="block hover:scale-105 transition m-6">
+    <div
+      className="block hover:scale-105 transition m-6 hover:cursor-pointer"
+      onClick={() => navigate(to)}
+    >
       {isPendulum ? (
         <PendulumCardFrame card={card} style={styles} />
       ) : isLink ? (
@@ -33,8 +39,8 @@ const CardComponent = ({ card }: CardProps) => {
       ) : (
         <DefaultCardFrame card={card} style={styles} />
       )}
-    </Link>
+    </div>
   )
 }
 
-export default CardComponent
+export default CardFrame
