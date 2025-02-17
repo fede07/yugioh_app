@@ -138,7 +138,7 @@ const CardDetail = () => {
             <img
               src={card.card_images[0]?.image_url}
               alt={card.name}
-              className="max-w-full max-h-full rounded-lg shadow-lg cursor-pointer animate-fadeIn"
+              className="scale-85 max-w-full max-h-full rounded-lg shadow-lg cursor-pointer animate-fadeIn"
               onClick={(e) => e.stopPropagation()}
             />
           </div>)
