@@ -126,7 +126,7 @@ const SearchAndFilter = ({ image, onApplyFilters, onShowAdvanced }: Props) => {
   return (
     <div className=" container bg-gray-200 rounded-lg shadow-md mb-4 m-auto">
       <div className="fixed xl:mx-44 top-0 left-0 right-0 z-50 flex items-center gap-2 p-2 bg-gray-200 rounded-lg shadow-md">
-        <button onClick={backHome} className={"hover:cursor-pointer"}>
+        <button onClick={backHome} className={"flex-none hover:cursor-pointer"}>
           <img src={image} alt={'Logo'} className={'w-12 h-12'} />
         </button>
         <input
@@ -135,7 +135,7 @@ const SearchAndFilter = ({ image, onApplyFilters, onShowAdvanced }: Props) => {
           value={search}
           onChange={(e) => setSearch(e.target.value)}
           onKeyDown={handleKeyDown}
-          className="flex-1 p-2 rounded-lg border border-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
+          className="flex-1 max-w-xs sm:max-w-xl p-2 rounded-lg border border-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-500"
         />
 
         <button onClick={applyFilters} className="p-2 text-green-500 font-bold">
@@ -163,6 +163,7 @@ const SearchAndFilter = ({ image, onApplyFilters, onShowAdvanced }: Props) => {
                 array={CARD_TYPES_GENERAL}
                 name={'Card Type'}
                 onChange={handleCardTypeChange}
+                initialValue={selectedCardType ?? undefined}
               />
             </div>
 
@@ -176,32 +177,38 @@ const SearchAndFilter = ({ image, onApplyFilters, onShowAdvanced }: Props) => {
                   array={CARD_TYPES_MONSTERS}
                   name="Type"
                   onChange={(val) => updateFilter('type', val)}
+                  initialValue={typeof filters.type === 'string' ? filters.type : undefined}
                 />
                 <Selector
                   array={ATTRIBUTES_NAMES}
                   name="Attribute"
                   onChange={(val) => updateFilter('attribute', val)}
+                  initialValue={typeof filters.attribute === 'string' ? filters.attribute : undefined}
                 />
                 <Slider
                   name="Level"
                   onChange={(val) => updateFilter('level', val)}
+                  initialValue={typeof filters.level === 'number' ? filters.level : 0}
                 />
                 <Selector
                   array={RACES_MONSTERS}
                   name="Monster Race"
                   onChange={(val) => updateFilter('race', val)}
+                  initialValue={typeof filters.race === 'string' ? filters.race : undefined}
                 />
                 <input
                   type="number"
                   placeholder="ATK"
                   onChange={(e) => updateFilter('atk', e.target.value)}
                   className="no-arrows border border-gray-400 rounded-md p-1"
+                  value={filters.atk? filters.atk : ''}
                 />
                 <input
                   type="number"
                   placeholder="DEF"
                   onChange={(e) => updateFilter('def', e.target.value)}
                   className="no-arrows border border-gray-400 rounded-md p-1"
+                  value={filters.def? filters.def : ''}
                 />
               </div>
             )}
@@ -216,6 +223,7 @@ const SearchAndFilter = ({ image, onApplyFilters, onShowAdvanced }: Props) => {
                   array={CARD_TYPES_SPELLS}
                   name={'Spell Type'}
                   onChange={(val) => updateFilter('race', val)}
+                  initialValue={typeof filters.race === 'string' ? filters.race : undefined}
                 />
               </div>
             )}
@@ -230,6 +238,7 @@ const SearchAndFilter = ({ image, onApplyFilters, onShowAdvanced }: Props) => {
                   array={CARD_TYPES_TRAPS}
                   name={'Trap Type'}
                   onChange={(val) => updateFilter('race', val)}
+                  initialValue={typeof filters.race === 'string' ? filters.race : undefined}
                 />
               </div>
             )}

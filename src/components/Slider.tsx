@@ -2,10 +2,11 @@ import { ChangeEvent, useState } from "react";
 
 type LevelSliderProps = {
   name: string;
+  initialValue: number;
   onChange: (level: number) => void;
 };
 
-const Slider = ({ name, onChange }: LevelSliderProps) => {
+const Slider = ({ name, initialValue, onChange }: LevelSliderProps) => {
   const [value, setValue] = useState(0);
 
   const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
@@ -24,12 +25,12 @@ const Slider = ({ name, onChange }: LevelSliderProps) => {
           type="range"
           min="0"
           max="12"
-          value={value}
+          value={value? value : initialValue}
           onChange={handleChange}
           className="w-full cursor-pointer"
         />
         <label className="text-black text-sm">
-          {elementName}: {value === 0 ? "Any" : value}
+          {elementName}: { initialValue? initialValue : (value === 0 ? "Any" : value)}
         </label>
       </div>
     </label>

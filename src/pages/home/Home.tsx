@@ -131,7 +131,10 @@ const Home = () => {
         <SearchAndFilter
           image={LOGO_IMG_PUBLIC}
           onApplyFilters={(newFilters) => {
-            setQueryParams(newFilters)
+            setQueryParams((prevParams) => ({
+              ...prevParams,
+              ...newFilters,
+            }))
             setCurrentPage(1)
           }}
           onShowAdvanced={() => {

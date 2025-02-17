@@ -1,5 +1,6 @@
 import { Card } from '../types/Card.ts'
 import AttributeIcon from './AttributeIcon.tsx'
+import { spellRacesImages } from '../constants/spellRaces.ts'
 
 interface SpellTrapCardFrameProps {
   card: Card
@@ -14,6 +15,9 @@ interface SpellTrapCardFrameProps {
 }
 
 export const SpellTrapCardFrame = ({ card, style }: SpellTrapCardFrameProps) => {
+
+  const raceImage = spellRacesImages.get(card.race)
+
   return (
     <div
       className={`block border-10 rounded-lg shadow-lg ${style.bg} border-gray-600
@@ -27,8 +31,15 @@ export const SpellTrapCardFrame = ({ card, style }: SpellTrapCardFrameProps) => 
       </div>
 
 
-      <div>
-        <p className="text-sm text-right font-semibold pr-4 text-black">[{card.type}]</p>
+      <div className="flex justify-end pr-0 text-yellow-500">
+        <p className="text-sm text-right font-semibold text-black">[{card.type}</p>
+        {card.race !== "Normal" && (
+          <img
+            src={raceImage}
+            alt=""
+            className="w-4 h-4" />
+        )}
+        <p className="text-sm text-right font-semibold pr-4 text-black">]</p>
       </div>
 
       {/* Imagen */}

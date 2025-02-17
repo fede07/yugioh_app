@@ -1,10 +1,11 @@
 type SelectorProps = {
   array: string[];
   name?: string;
+  initialValue?: string;
   onChange: (value: string) => void;
 };
 
-const Selector = ({ array, name, onChange }: SelectorProps) => {
+const Selector = ({ array, name, initialValue, onChange }: SelectorProps) => {
 
   let elementName = ""
 
@@ -18,8 +19,9 @@ const Selector = ({ array, name, onChange }: SelectorProps) => {
       <select
         className="block w-full p-2 mt-1 border rounded"
         onChange={(e) => onChange(e.target.value)}
+        value={initialValue}
       >
-        {(name !== undefined) ? ( <option value="">Select {elementName}</option> ) : (<span/>)}
+        {(name !== undefined) ? ( <option value="">Select {elementName}</option> ) : (<></>)}
         {array.map((element) => (
           <option key={element} value={element}>
             {element}

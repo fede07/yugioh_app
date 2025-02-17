@@ -13,8 +13,11 @@ const CardDetail = () => {
   const [loading, setLoading] = useState(true)
   const [loadingRelated, setLoadingRelated] = useState(true)
   const [relatedCards, setRelatedCards] = useState<Card[]>([])
+  const [modalOpen, setModalOpen] = useState(false)
 
   const navigate = useNavigate()
+
+  const closeModal = () => setModalOpen(false)
 
   useEffect(() => {
     if (id != null) {
@@ -66,7 +69,7 @@ const CardDetail = () => {
 
         {/* CARD INFO */}
         <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 py-3 items-center">
-          <div className="flex justify-center">
+          <div className="flex justify-center" onClick={() => setModalOpen(true)}>
             <CardFrame card={card} to={`/card/${card.id}`} />
           </div>
           <CardInfo card={card} />
@@ -127,6 +130,19 @@ const CardDetail = () => {
             </ul>
           )}
         </div>
+        {modalOpen && (
+          <div
+            className="fixed inset-0 bg-gray-950/60 flex items-center justify-center z-50"
+            onClick={closeModal}
+          >
+            <img
+              src={card.card_images[0]?.image_url}
+              alt={card.name}
+              className="max-w-full max-h-full rounded-lg shadow-lg cursor-pointer animate-fadeIn"
+              onClick={(e) => e.stopPropagation()}
+            />
+          </div>)
+        }
       </div>
     </div>
   )

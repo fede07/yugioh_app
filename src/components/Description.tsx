@@ -51,7 +51,7 @@ export const Description = ({ card, style, isPendulum }: DescriptionProps) => {
               <p className={'pr-1'}>ATK/ {card.atk === -1 ? "?" : card.atk}</p>
             )}
             {card.def !== undefined && (
-              <p className={'pr-1'}>DEF/ {card.def === -1 ? "?" : card.atk}</p>
+              <p className={'pr-1'}>DEF/ {card.def === -1 ? "?" : card.def}</p>
             )}
           </div>
         </div>
