@@ -64,6 +64,8 @@ const SearchAndFilter = ({ image, onApplyFilters, onShowAdvanced }: Props) => {
       .map(([k, v]) => `${k}=${encodeURIComponent(String(v))}`)
       .join('&')
 
+    toggleFilters()
+
     onApplyFilters({
       search,
       filters: filterQuery,
