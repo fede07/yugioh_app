@@ -58,7 +58,7 @@ const CardDetail = () => {
 
   return (
     <div className="flex flex-col gap-4 mx-auto place-items-center p-4 sm:p-8 min-h-screen w-full">
-      <div className="container mx-auto p-4 bg-gray-900 rounded-md border-2 border-gray-400 relative">
+      <div className="container p-1 bg-gray-900 rounded-md border-2 border-gray-400 relative">
         {/* BACK BUTTON */}
         <button
           onClick={() => navigate(-1)}
@@ -132,13 +132,13 @@ const CardDetail = () => {
         </div>
         {modalOpen && (
           <div
-            className="fixed inset-0 bg-gray-950/60 flex items-center justify-center z-50"
+            className="fixed inset-0 bg-gray-950/80 flex flex-row gap-0 items-center justify-center z-50"
             onClick={closeModal}
           >
             <img
               src={card.card_images[0]?.image_url}
               alt={card.name}
-              className="scale-85 max-w-full max-h-full rounded-lg shadow-lg cursor-pointer animate-fadeIn"
+              className="relative max-w-[70%] max-h-[70vh] rounded-lg shadow-lg cursor-pointer animate-fadeIn object-contain mr-18 sm:mr-0"
               onClick={(e) => e.stopPropagation()}
             />
           </div>)
