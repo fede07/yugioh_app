@@ -126,7 +126,7 @@ const SearchAndFilter = ({ image, onApplyFilters, onShowAdvanced }: Props) => {
   return (
     <div className=" container bg-gray-200 rounded-lg shadow-md mb-4 m-auto">
       <div className="fixed xl:mx-44 top-0 left-0 right-0 z-50 flex items-center gap-2 p-2 bg-gray-200 rounded-lg shadow-md">
-        <button onClick={backHome} className={"flex-none hover:cursor-pointer"}>
+        <button onClick={backHome} className={"flex-none hover:cursor-pointer hover:scale-110"}>
           <img src={image} alt={'Logo'} className={'w-12 h-12'} />
         </button>
         <input

@@ -62,7 +62,7 @@ const CardDetail = () => {
         {/* BACK BUTTON */}
         <button
           onClick={() => navigate(-1)}
-          className="absolute top-2 right-2 z-50 bg-indigo-950/80 hover:bg-indigo-800 border-gray-400 border-2 p-3 sm:p-4 rounded-md transition-colors"
+          className="absolute top-2 right-2 z-50 bg-indigo-950/80 hover:bg-indigo-800 border-gray-400 border-2 p-3 sm:p-4 rounded-md transition-colors hover:scale-110"
         >
           <Undo2 color="#ffffff" strokeWidth={2.25} size={32} />
         </button>

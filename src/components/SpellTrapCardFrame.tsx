@@ -31,7 +31,7 @@ export const SpellTrapCardFrame = ({ card, style }: SpellTrapCardFrameProps) => 
       </div>
 
 
-      <div className="flex justify-end pr-0 text-yellow-500">
+      <div className="flex justify-end py-0 pr-0 text-yellow-500">
         <p className="text-sm text-right font-semibold text-black">[{card.type}</p>
         {card.race !== "Normal" && (
           <img

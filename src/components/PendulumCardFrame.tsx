@@ -1,6 +1,7 @@
 import { Card } from '../types/Card.ts'
 import AttributeIcon from './AttributeIcon.tsx'
 import { Description } from './Description.tsx'
+import CardLevel from './CardLevel.tsx'
 
 interface PendulumCardFrameProps {
   card: Card
@@ -30,18 +31,7 @@ const PendulumCardFrame = ({ card, style }: PendulumCardFrameProps) => {
 
       {/* Card level */}
 
-      <div className="flex justify-end pr-4 text-yellow-500">
-        {Array.from({ length: card.level || 0 }, (_, i) => (
-          <span
-            key={i}
-            className={
-              "bg-gradient-to-br from-orange-500 to-red-700 rounded-full w-4 h-4 flex items-center justify-center font-bold text-md"
-            }
-          >
-              ★
-            </span>
-        ))}
-      </div>
+      <CardLevel level={card.level ?? 0} type={card.type} />
 
       <div className="relative">
 
@@ -54,7 +44,7 @@ const PendulumCardFrame = ({ card, style }: PendulumCardFrameProps) => {
           />
         </div>
         {/* Pendulum Description */}
-        <div className="absolute bottom-0 grid-rows-2 space-y-0 bg-teal-200 border-3 border-gray-700 text-black">
+        <div className="absolute bottom-0 grid-rows-2 space-y-0 bg-teal-200/60 border-3 border-gray-700 text-black">
           <div className="flex flex-row rounded-sm text-xs overflow-hidden">
             {/* Left Pendulum */}
             <div className="flex flex-col px-2 py-1 border-r-3 border-gray-700 font-extrabold">
@@ -63,8 +53,8 @@ const PendulumCardFrame = ({ card, style }: PendulumCardFrameProps) => {
             </div>
 
             {/* Monster Description */}
-            <div className="p-2">
-              <p className="line-clamp-3">{card.pend_desc}</p>
+            <div className="p-2 w-full">
+              <p className="line-clamp-3">{card.pend_desc !== undefined? card.pend_desc : ""}</p>
             </div>
 
             {/* Right Pendulum */}

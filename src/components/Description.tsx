@@ -21,7 +21,7 @@ export const Description = ({ card, style, isPendulum }: DescriptionProps) => {
           <p className={`font-bold pl-1 pr-1 ${style.borderDesc}`}>
             [{card.typeline?.join('/')}]
           </p>
-          <p className="line-clamp-3 pl-1 pr-1">{card.monster_desc}</p>
+          <p className="line-clamp-3 pl-1 pr-1">{card.monster_desc !== undefined? card.monster_desc : card.desc }</p>
           <div className="flex justify-end space-x-2 text-xs border-t-1">
             {card.atk !== undefined && (
               <p className="text-right text-xs font-semibold pr-1">
