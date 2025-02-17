@@ -78,6 +78,7 @@ const Filter = ({
           <Slider
             name={'Level'}
             onChange={(val) => updateFilter('level', val)}
+            initialValue={0}
           />
           <Selector
             array={RACES_MONSTERS}
