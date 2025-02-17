@@ -16,7 +16,6 @@ export const getAllCards = async (): Promise<Card[]> => {
 export const getCardById = async (id: string): Promise<Card> => {
   try {
     const response = await axios.get(`${BASE_URL}/cardinfo.php?id=${id}`)
-    console.log(response.data)
     return response.data.data[0]
   } catch (error) {
     console.log(error)
@@ -72,7 +71,6 @@ export const getCardsByFilterPaginated = async (filter: string, limit: number, o
 
 export const getCardsLimitOffset = async (limit: number, offset: number): Promise<{data: Card[]; total: number}> => {
   try {
-    console.log(limit, offset)
     const response = await axios.get(`${BASE_URL}/cardinfo.php?num=${limit}&offset=${offset}`)
     return {
       data: response.data.data,

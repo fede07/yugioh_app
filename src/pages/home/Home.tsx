@@ -84,7 +84,6 @@ const Home = () => {
         }
 
         const queryString = queryParts.join('&')
-        console.log('Fetching cards with query:', queryString)
 
         if (queryString.length === 0) {
           setLoading(false)
@@ -97,7 +96,6 @@ const Home = () => {
           cardsPerPage,
           (currentPage - 1) * cardsPerPage
         )
-        console.log(result)
         setCards(result.data || [])
         setTotalCards(result.total)
       } catch {
